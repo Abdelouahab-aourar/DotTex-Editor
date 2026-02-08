@@ -1,8 +1,8 @@
 import { Folder, FolderOpen, Search } from 'lucide-react'
 
 type Props = {
-    selected: number|null
-    setSelected: (state: number|null) => void
+    selected: number | null
+    setSelected: (state: number | null) => void
     collapsePanel: () => void
     expandPanel: () => void
     expandMethod: any
@@ -36,10 +36,8 @@ export const Sidebar = ({ selected, setSelected, collapsePanel, expandPanel, exp
                     return (
                         <div key={key} className={`px-2 py-3 ${isSelected ? "border-l-2 border-l-blue-500" : "border-l-2 border-l-transparent"} border-r-2 border-r-transparent flex items-center justify-center`}>
                             <IconTag
-                                key={item.id}
                                 size={28}
                                 strokeWidth={2}
-
                                 className={`hover:cursor-pointer hover:text-text transition-all ${isSelected ? "text-text" : "text-stroke"}`}
                                 onClick={() => handleIconClick(item.id)}
                             />

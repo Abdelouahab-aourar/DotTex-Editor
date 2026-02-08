@@ -23,7 +23,10 @@
     }
   },
   "bundle": {
-    "externalBin": ["binaries/texlab"],
+    "externalBin": [
+      "binaries/texlab",
+      "binaries/tectonic"
+    ],
     "active": true,
     "targets": "all",
     "icon": [

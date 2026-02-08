@@ -49,14 +49,13 @@ export const Titlebar = () => {
                 </h1>
                 <div className="flex items-center space-x-1" data-tauri-drag-region="false">
                     {
-                        tools.map((s, i) => {
+                        tools.map((tool, key) => {
                             return (
-                                <Button variant="ghost" size="sm">{s}</Button>
+                                <Button key={key} variant="ghost" size="sm">{tool}</Button>
                             )
                         })
                     }
                 </div>
-
             </div>
             <div className="flex space-x-2" data-tauri-drag-region="false">
                 {

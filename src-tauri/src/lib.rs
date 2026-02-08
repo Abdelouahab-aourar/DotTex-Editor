@@ -29,6 +29,24 @@ async fn start_texlab(app_handle: AppHandle) {
     // });
 }
 
+// #[tauri::command]
+// async fn compile_latex(app: tauri::AppHandle, tex_path: String) -> Result<String, String> {
+//     let sidecar = app.shell().sidecar("tectonic")
+//         .map_err(|e| e.to_string())?;
+//     let output = sidecar
+//         .args(["-X", "compile", &tex_path])
+//         .output()
+//         .await
+//         .map_err(|e| format!("Failed to run Tectonic: {}", e))?;
+
+//     if output.status.success() {
+//         Ok("PDF generated successfully!".into())
+//     } else {
+//         let stderr = String::from_utf8_lossy(&output.stderr);
+//         Err(format!("Tectonic Error: {}", stderr))
+//     }
+// }
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()

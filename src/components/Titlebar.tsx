@@ -1,5 +1,8 @@
 import { Expand, Minus, X } from "lucide-react"
 import { getCurrentWindow } from "@tauri-apps/api/window";
+
+import { Button } from "./ui/button";
+
 const appWindow = getCurrentWindow();
 
 async function minimize() {
@@ -48,7 +51,7 @@ export const Titlebar = () => {
                     {
                         tools.map((s, i) => {
                             return (
-                                <h3 key={i} className="hover:bg-hover px-2 py-1 rounded m-0 text-sm">{s}</h3>
+                                <Button variant="ghost" size="sm">{s}</Button>
                             )
                         })
                     }

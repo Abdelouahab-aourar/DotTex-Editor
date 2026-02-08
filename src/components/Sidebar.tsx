@@ -1,8 +1,6 @@
 import { Folder, FolderOpen, Search } from 'lucide-react'
 
 type Props = {
-    explorerOpen: boolean
-    setExplorerOpen: (state: boolean) => void
     selected: number|null
     setSelected: (state: number|null) => void
     collapsePanel: () => void
@@ -10,17 +8,15 @@ type Props = {
     expandMethod: any
 }
 
-export const Sidebar = ({ explorerOpen, setExplorerOpen, selected, setSelected, collapsePanel, expandPanel, expandMethod }: Props) => {
+export const Sidebar = ({ selected, setSelected, collapsePanel, expandPanel, expandMethod }: Props) => {
 
     const handleIconClick = (index: number) => {
-        if (explorerOpen && selected === index) {
-            setExplorerOpen(false);
+        expandMethod.current = "click"
+        if (selected === index) {
             setSelected(null);
             collapsePanel();
         } else {
-            expandMethod.current = "click";
             setSelected(index);
-            setExplorerOpen(true);
             expandPanel();
         }
     };
@@ -35,7 +31,7 @@ export const Sidebar = ({ explorerOpen, setExplorerOpen, selected, setSelected, 
             {
                 navItems.map((item, key) => {
                     const isSelected = selected === item.id;
-                    const IconTag = (isSelected && explorerOpen) ? item.activeIcon : item.inactiveIcon;
+                    const IconTag = (isSelected) ? item.activeIcon : item.inactiveIcon;
 
                     return (
                         <div key={key} className={`px-2 py-3 ${isSelected ? "border-l-2 border-l-blue-500" : "border-l-2 border-l-transparent"} border-r-2 border-r-transparent flex items-center justify-center`}>

@@ -38,17 +38,17 @@ export const Titlebar = () => {
     ]
     return (
 
-        <header data-tauri-drag-region className="select-none flex justify-between items-center bg-background border-b border-b-white p-2">
+        <header data-tauri-drag-region className="select-none flex justify-between items-center bg-background border-b border-b-border px-4 py-1">
 
             <div className="flex space-x-6">
-                <h1 className="text-xl text-white" data-tauri-drag-region="false">
+                <h1 className="text-xl " data-tauri-drag-region="false">
                     L
                 </h1>
-                <div className="flex space-x-2.5" data-tauri-drag-region="false">
+                <div className="flex items-center space-x-1" data-tauri-drag-region="false">
                     {
                         tools.map((s, i) => {
                             return (
-                                <h3 key={i} className="text-white text-sm">{s}</h3>
+                                <h3 key={i} className="hover:bg-hover px-2 py-1 rounded m-0 text-sm">{s}</h3>
                             )
                         })
                     }

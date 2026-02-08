@@ -1,4 +1,3 @@
-// Explorer.tsx
 import { FileTree } from "./panels/FileTree";
 import { Search } from "./panels/Search";
 
@@ -13,7 +12,7 @@ export const Explorer = ({ selected }: ExplorerProps) => {
     };
 
     return (
-        <div>    
+        <div className="h-full">    
             {selected !== null && panels[selected]}
         </div>
     )

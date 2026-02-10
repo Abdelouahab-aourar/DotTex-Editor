@@ -9,7 +9,7 @@ import { Panel, Group, usePanelRef, PanelSize } from "react-resizable-panels";
 
 function App() {
   const [selected, setSelected] = useState<number | null>(null);
-  
+
   const lastSelected = useRef<number | null>(0);
   const expandMethod = useRef<"click" | "drag" | null>(null);
 
@@ -53,26 +53,27 @@ function App() {
       <Titlebar />
 
       <div className="flex flex-1 items-center">
-        <Sidebar 
-          selected={selected} 
-          setSelected={setSelected} 
-          collapsePanel={collapsePanel} 
-          expandPanel={expandPanel} 
-          expandMethod={expandMethod} 
+        <Sidebar
+          selected={selected}
+          setSelected={setSelected}
+          collapsePanel={collapsePanel}
+          expandPanel={expandPanel}
+          expandMethod={expandMethod}
         />
 
         <Group>
-          <Panel 
-            panelRef={ref} 
-            collapsible 
-            minSize={150} 
-            maxSize="70%" 
+          <Panel
+            defaultSize="0%"
+            panelRef={ref}
+            collapsible
+            minSize={150}
+            maxSize="70%"
             onResize={handlePanelResize}
           >
             <Explorer selected={selected} />
           </Panel>
 
-          <Panel defaultSize="90%">
+          <Panel>
             <Editor theme="vs-dark" height={"100%"} language="javascript" />
           </Panel>
         </Group>

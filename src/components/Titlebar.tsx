@@ -2,6 +2,10 @@ import { Expand, Minus, X } from "lucide-react"
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
 import { Button } from "./ui/button";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuLabel, DropdownMenuItem, DropdownMenuShortcut, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuPortal, DropdownMenuSubContent } from "./ui/dropdown-menu";
+import { FileDropdown } from "./Dropdowns/FileDropdown";
+import { EditDropdown } from "./Dropdowns/EditDropdown";
+import { RunDropdown } from "./Dropdowns/RunDropdown";
 
 const appWindow = getCurrentWindow();
 
@@ -35,9 +39,9 @@ export const Titlebar = () => {
     ]
 
     const tools = [
-        "File",
-        "Edit",
-        "Run"
+        {label: "File", Menu: FileDropdown},
+        {label: "Edit", Menu: EditDropdown},
+        {label: "Run", Menu: RunDropdown}
     ]
     return (
 
@@ -50,9 +54,14 @@ export const Titlebar = () => {
                 <div className="flex items-center space-x-1" data-tauri-drag-region="false">
                     {
                         tools.map((tool, key) => {
+                            const Content = tool.Menu;
                             return (
-                                <Button key={key} variant="ghost" size="sm">{tool}</Button>
-                            )
+                                <DropdownMenu key={key}>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost">{tool.label}</Button>
+                                    </DropdownMenuTrigger>
+                                    <Content />
+                                </DropdownMenu>)
                         })
                     }
                 </div>

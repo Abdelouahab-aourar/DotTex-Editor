@@ -1,6 +1,6 @@
 use tauri::{AppHandle, Emitter, Manager};
-use tauri_plugin_shell::ShellExt;
 use tauri_plugin_shell::process::CommandEvent;
+use tauri_plugin_shell::ShellExt;
 
 #[tauri::command]
 async fn start_texlab(app_handle: AppHandle) {
@@ -16,7 +16,7 @@ async fn start_texlab(app_handle: AppHandle) {
     //     while let Some(event) = rx.recv().await {
     //         match event {
     //             CommandEvent::Stdout(line_bytes) => {
-    //                 let line = String::from_utf8_lossy(&line_bytes).to_string();                    
+    //                 let line = String::from_utf8_lossy(&line_bytes).to_string();
     //                 let _ = app_handle.emit("lsp-data", line);
     //             }
     //             CommandEvent::Stderr(err_bytes) => {
@@ -50,6 +50,8 @@ async fn start_texlab(app_handle: AppHandle) {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![start_texlab])

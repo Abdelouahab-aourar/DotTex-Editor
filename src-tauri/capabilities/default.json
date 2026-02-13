@@ -2,7 +2,9 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "core:default",
     "opener:default",
@@ -13,6 +15,16 @@
     "core:window:allow-close",
     "core:window:allow-is-maximized",
     "core:window:allow-start-dragging",
+    "fs:allow-app-read-recursive",
+    "fs:allow-exists",
+    {
+      "identifier": "fs:allow-desktop-read-recursive",
+      "comment": "Allows recursive access if folders are on the desktop"
+    },
+    {
+      "identifier": "fs:allow-home-read-recursive",
+      "comment": "Allows reading subfolders nested deeply within the home directory"
+    },
     {
       "identifier": "shell:allow-execute",
       "allow": [
@@ -22,6 +34,16 @@
           "sidecar": true
         }
       ]
-    }
+    },
+    "fs:default",
+    {
+      "identifier": "fs:allow-exists",
+      "allow": [
+        {
+          "path": "$APPDATA/*"
+        }
+      ]
+    },
+    "dialog:default"
   ]
 }

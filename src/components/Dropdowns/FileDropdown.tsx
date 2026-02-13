@@ -1,25 +1,23 @@
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuShortcut } from "../ui/dropdown-menu"
-
+import { OpenFolder } from "@/utils/OpenProject"
 
 
 export const FileDropdown = () => {
 
     return (
         <DropdownMenuContent className="w-60" align="start">
-            <DropdownMenuItem>
-                New Document
+            <DropdownMenuItem onClick={OpenFolder}>
+                New Project
                 <DropdownMenuShortcut>ctrl+N</DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-                Open Document
+            <DropdownMenuItem onClick={OpenFolder}>
+                Open Project
                 <DropdownMenuShortcut>ctrl+O</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem>
-                Close Document
+                Close Project
                 <DropdownMenuShortcut></DropdownMenuShortcut>
             </DropdownMenuItem>
         </DropdownMenuContent>
     )
-
-
 }

@@ -6,12 +6,16 @@ import { Titlebar } from "./components/Titlebar";
 
 import { useRef, useState } from "react";
 import { Panel, Group, usePanelRef, PanelSize } from "react-resizable-panels";
+import { useEditorStore } from "./stores/editorStore";
+import { Filetab } from "./components/Filetab";
 
 function App() {
   const [selected, setSelected] = useState<number | null>(null);
 
   const lastSelected = useRef<number | null>(0);
   const expandMethod = useRef<"click" | "drag" | null>(null);
+
+  const { setEditor } = useEditorStore();
 
   const ref = usePanelRef();
 
@@ -73,8 +77,16 @@ function App() {
             <Explorer selected={selected} />
           </Panel>
 
-          <Panel>
-            <Editor theme="vs-dark" height={"100%"} language="javascript" />
+          <Panel className="flex flex-col justify-between items-center space-y-2">
+            <Filetab />
+            <Editor
+              className="flex-1"
+              theme="vs-dark"
+              height={"100%"}
+              language="javascript"
+              onMount={(editor: any) => {
+                setEditor(editor);
+              }} />
           </Panel>
         </Group>
       </div>

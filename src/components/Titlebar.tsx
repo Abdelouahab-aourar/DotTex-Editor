@@ -2,7 +2,7 @@ import { Expand, Minus, X } from "lucide-react"
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
 import { Button } from "./ui/button";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuLabel, DropdownMenuItem, DropdownMenuShortcut, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuPortal, DropdownMenuSubContent } from "./ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { FileDropdown } from "./Dropdowns/FileDropdown";
 import { EditDropdown } from "./Dropdowns/EditDropdown";
 import { RunDropdown } from "./Dropdowns/RunDropdown";
@@ -45,9 +45,9 @@ export const Titlebar = () => {
     ]
     return (
 
-        <header data-tauri-drag-region className="select-none flex justify-between items-center bg-background border-b border-b-border px-4 py-1">
+        <header data-tauri-drag-region className="select-none flex justify-between items-center bg-background border-b border-b-border px-4">
 
-            <div className="flex space-x-6">
+            <div className="flex items-center space-x-6">
                 <h1 className="text-xl " data-tauri-drag-region="false">
                     L
                 </h1>

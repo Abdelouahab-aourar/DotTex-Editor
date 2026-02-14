@@ -1,16 +1,23 @@
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuShortcut } from "../ui/dropdown-menu"
 import { OpenFolder } from "@/utils/OpenProject"
+import { useFileStore } from "@/stores/useFileStore";
 
 
 export const FileDropdown = () => {
-
+    const setFolderTree = useFileStore((state) => state.setFolderTree);    
+    const handleOpen = async () => {
+        const tree = await OpenFolder()
+        if(tree.length > 0){
+            setFolderTree(tree)
+        }
+    }
     return (
         <DropdownMenuContent className="w-60" align="start">
-            <DropdownMenuItem onClick={OpenFolder}>
+            <DropdownMenuItem onClick={() => handleOpen()}>
                 New Project
                 <DropdownMenuShortcut>ctrl+N</DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={OpenFolder}>
+            <DropdownMenuItem onClick={() => handleOpen()}>
                 Open Project
                 <DropdownMenuShortcut>ctrl+O</DropdownMenuShortcut>
             </DropdownMenuItem>

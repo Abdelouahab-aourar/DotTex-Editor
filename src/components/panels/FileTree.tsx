@@ -1,30 +1,11 @@
 import { Button } from "@/components/ui/button"
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+import { DirectorySchema } from "@/utils/OpenProject"
+import { useFileStore } from "@/stores/useFileStore"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { ChevronRightIcon, FileIcon, FolderIcon } from "lucide-react"
-
-type FileTreeItem = { name: string } | { name: string; items: FileTreeItem[] }
-
 export function FileTree() {
-    const fileTree: FileTreeItem[] = [
-        {
-            name: "assets",
-            items: [
-                { name: "photo1.png" },
-                { name: "photo2.png" },
-                { name: "photo3.png" },
-                { name: "photo4.png" },
-                { name: "photo5.png" },
-                { name: "photo6.png" },
-            ],
-        },
-        { name: "document.tex" },
-    ]
-
-    const renderItem = (fileItem: FileTreeItem) => {
+    const folderTree = useFileStore((state) => state.folderTree);
+    const renderItem = (fileItem: DirectorySchema) => {
         if ("items" in fileItem) {
             return (
                 <Collapsible key={fileItem.name}>
@@ -41,7 +22,7 @@ export function FileTree() {
                     </CollapsibleTrigger>
                     <CollapsibleContent className="style-lyra:ml-4 mt-1 ml-5">
                         <div className="flex flex-col gap-1">
-                            {fileItem.items.map((child) => renderItem(child))}
+                            {fileItem.items?.map((child) => renderItem(child))}
                         </div>
                     </CollapsibleContent>
                 </Collapsible>
@@ -64,7 +45,7 @@ export function FileTree() {
         <aside className="w-full h-full bg-background border-r border-border flex flex-col justify-around">
             <h1 className="py-3  px-4 flex items-center text-lg">Explorer</h1>
             <section className="flex-1 ">
-                {fileTree.map((item) => renderItem(item))}
+                {folderTree.map((item) => renderItem(item))}
             </section>
 
         </aside>)

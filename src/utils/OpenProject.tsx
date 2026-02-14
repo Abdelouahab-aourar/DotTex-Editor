@@ -30,9 +30,9 @@ export interface DirectorySchema {
 async function readFolderAsTree(folderPath: string): Promise<DirectorySchema[]> {
   try {
     const entries = await readDir(folderPath);
-
+    const visibleEntries = entries.filter(entry => !entry.name.startsWith('.'));
     return Promise.all(
-      entries.map(async (entry): Promise<DirectorySchema> => {
+      visibleEntries.map(async (entry): Promise<DirectorySchema> => {
         const newPath = await join(folderPath, entry.name);
 
         if (entry.isDirectory) {

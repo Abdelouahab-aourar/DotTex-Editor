@@ -1,4 +1,4 @@
-import { Columns2, FileCheckCorner, Ghost } from "lucide-react"
+import { Columns2, FileCheckCorner } from "lucide-react"
 import { Button } from "./ui/button"
 
 

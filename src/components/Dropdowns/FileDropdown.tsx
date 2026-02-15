@@ -12,6 +12,10 @@ export const FileDropdown = () => {
             setProjectOpen(true)
         }
     }
+    const closeProject = () => {
+        setFolderTree([])
+        setProjectOpen(false)
+    }
     return (
         <DropdownMenuContent className="w-60" align="start">
             <DropdownMenuItem onClick={() => handleOpen()}>
@@ -22,7 +26,7 @@ export const FileDropdown = () => {
                 Open Project
                 <DropdownMenuShortcut>ctrl+O</DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => closeProject()}>
                 Close Project
                 <DropdownMenuShortcut></DropdownMenuShortcut>
             </DropdownMenuItem>

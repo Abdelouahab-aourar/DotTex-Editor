@@ -8,9 +8,13 @@ import { useRef, useState } from "react";
 import { Panel, Group, usePanelRef, PanelSize } from "react-resizable-panels";
 import { useEditorStore } from "./stores/editorStore";
 import { Filetab } from "./components/Filetab";
+import { useFileStore } from "./stores/useFileStore";
+import { EmptyEditor } from "./components/EmptyEditor";
 
 function App() {
   const [selected, setSelected] = useState<number | null>(null);
+
+  const { isProjectOpen } = useFileStore();
 
   const lastSelected = useRef<number | null>(0);
   const expandMethod = useRef<"click" | "drag" | null>(null);
@@ -78,15 +82,22 @@ function App() {
           </Panel>
 
           <Panel className="flex flex-col justify-between items-center space-y-2">
-            <Filetab />
-            <Editor
-              className="flex-1"
-              theme="vs-dark"
-              height={"100%"}
-              language="javascript"
-              onMount={(editor: any) => {
-                setEditor(editor);
-              }} />
+            {
+              isProjectOpen 
+                ? <>
+                    <Filetab />
+                    <Editor
+                      className="flex-1"
+                      theme="vs-dark"
+                      height={"100%"}
+                      language="javascript"
+                      onMount={(editor: any) => {
+                        setEditor(editor);
+                      }} />
+                  </>
+                : <EmptyEditor />
+
+            }
           </Panel>
         </Group>
       </div>

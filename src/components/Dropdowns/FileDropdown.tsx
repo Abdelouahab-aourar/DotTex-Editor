@@ -4,11 +4,12 @@ import { useFileStore } from "@/stores/useFileStore";
 
 
 export const FileDropdown = () => {
-    const setFolderTree = useFileStore((state) => state.setFolderTree);    
+    const {setFolderTree, setProjectOpen} = useFileStore();    
     const handleOpen = async () => {
         const tree = await OpenFolder()
         if(tree.length > 0){
             setFolderTree(tree)
+            setProjectOpen(true)
         }
     }
     return (

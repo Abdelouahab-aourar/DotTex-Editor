@@ -4,7 +4,9 @@ import { useFileStore } from "@/stores/useFileStore"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { ChevronRightIcon, FileIcon, FolderIcon } from "lucide-react"
 export function FileTree() {
-    const folderTree = useFileStore((state) => state.folderTree);
+
+    const { folderTree, isProjectOpen } = useFileStore();
+
     const renderItem = (fileItem: DirectorySchema) => {
         if ("items" in fileItem) {
             return (
@@ -44,8 +46,12 @@ export function FileTree() {
     return (
         <aside className="w-full h-full bg-background border-r border-border flex flex-col justify-around">
             <h1 className="py-3  px-4 flex items-center text-lg">Explorer</h1>
-            <section className="flex-1 ">
-                {folderTree.map((item) => renderItem(item))}
+            <section className={`flex-1 ${!isProjectOpen && "flex flex-col items-center"}`}>
+                {
+                    isProjectOpen
+                    ? folderTree.map((item) => renderItem(item))
+                    : <Button>Open A Folder</Button>
+                }
             </section>
 
         </aside>)

@@ -4,10 +4,14 @@ interface FileItem {
   items?: FileItem[];
 }
 interface FileState {
+  isProjectOpen: boolean;
   folderTree: FileItem[];
+  setProjectOpen: (isOpen: boolean) => void;
   setFolderTree: (tree: FileItem[]) => void;
 }
 export const useFileStore = create<FileState>((set) => ({
+  isProjectOpen: false,
   folderTree: [],
-  setFolderTree: (tree) => set({ folderTree: tree }),
+  setProjectOpen: (isOpen) => set({ isProjectOpen: isOpen }),
+  setFolderTree: (tree) => set({ folderTree: tree })
 }));

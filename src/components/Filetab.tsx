@@ -1,5 +1,6 @@
 import { Columns2, FileCheckCorner } from "lucide-react"
 import { Button } from "./ui/button"
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "./ui/hover-card"
 
 
 
@@ -14,13 +15,28 @@ export const Filetab = () => {
                 </div>
             </div>
 
+
             <div className="flex items-center justify-around">
-                <Button variant="ghost" size="icon">
-                    <FileCheckCorner />
-                </Button>
-                <Button variant="ghost" size="icon">
-                    <Columns2 />
-                </Button>
+                <HoverCard>
+                    <HoverCardTrigger>
+                        <Button variant="ghost" size="icon">
+                            <FileCheckCorner />
+                        </Button>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="text-xs w-fit p-2">
+                        Build PDF
+                    </HoverCardContent>
+                </HoverCard>
+                <HoverCard>
+                    <HoverCardTrigger>
+                        <Button variant="ghost" size="icon">
+                            <Columns2 />
+                        </Button>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="text-xs w-fit p-2">
+                        Preview PDF
+                    </HoverCardContent>
+                </HoverCard>
             </div>
 
         </div>

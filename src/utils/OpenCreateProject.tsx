@@ -48,7 +48,7 @@ export const CreateProject = async (): Promise<DirectorySchema[]> => {
     entry.name?.toLowerCase().endsWith(".tex")
   );
   if (texFiles.length > 0) {
-    await message('Project already initialised you can open it using Open Project', {
+    await message('Project already initialized you can open it using Open Project', {
       title: 'tex-ide',
       kind: 'error'
     });

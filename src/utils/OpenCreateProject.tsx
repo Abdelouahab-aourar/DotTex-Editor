@@ -1,9 +1,9 @@
 "use client"
 import { open } from '@tauri-apps/plugin-dialog';
-import { readDir } from "@tauri-apps/plugin-fs";
+import { readDir, create } from "@tauri-apps/plugin-fs";
 import { join } from "@tauri-apps/api/path";
 import { message } from '@tauri-apps/plugin-dialog';
-export const OpenFolder = async (): Promise<DirectorySchema[]> => {
+export const OpenProject = async (): Promise<DirectorySchema[]> => {
   const selectedPath = await open({
     multiple: false,
     directory: true,
@@ -34,16 +34,42 @@ export const OpenFolder = async (): Promise<DirectorySchema[]> => {
   return result;
 }
 
+export const CreateProject = async (): Promise<DirectorySchema[]> => {
+  const selectedPath = await open({
+    multiple: false,
+    directory: true,
+  });
+  if (!selectedPath) {
+    await message('No Folder Selected', { title: 'tex-ide', kind: 'info' });
+    return [];
+  }
+  const entries = await readDir(selectedPath);
+  const texFiles = entries.filter(entry =>
+    entry.name?.toLowerCase().endsWith(".tex")
+  );
+  if (texFiles.length > 0) {
+    await message('Project already initialised you can open it using Open Project', {
+      title: 'tex-ide',
+      kind: 'error'
+    });
+    return [];
+  }
+  const mainFilePath = await join(selectedPath, 'main.tex');
+  await create(mainFilePath);
+  const result = await readFolderAsTree(selectedPath);
+  return result;
+}
+
 
 
 export interface DirectorySchema {
   name: string;
   items?: DirectorySchema[];
 }
-
+const IGNORE_LIST = new Set(['node_modules']);
 async function readFolderAsTree(folderPath: string): Promise<DirectorySchema[]> {
   const entries = await readDir(folderPath);
-  const visibleEntries = entries.filter(entry => !entry.name.startsWith('.'));
+  const visibleEntries = entries.filter(entry => !entry.name.startsWith('.') && !IGNORE_LIST.has(entry.name) );
   return Promise.all(
     visibleEntries.map(async (entry): Promise<DirectorySchema> => {
       const newPath = await join(folderPath, entry.name);

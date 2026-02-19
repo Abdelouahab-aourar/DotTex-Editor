@@ -17,6 +17,8 @@
     "core:window:allow-start-dragging",
     "fs:allow-app-read-recursive",
     "fs:allow-exists",
+    "fs:allow-app-write",
+    "fs:allow-app-read",
     {
       "identifier": "fs:allow-desktop-read-recursive",
       "comment": "Allows recursive access if folders are on the desktop"

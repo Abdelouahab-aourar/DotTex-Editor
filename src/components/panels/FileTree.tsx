@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { DirectorySchema } from "@/utils/OpenProject"
+import { DirectorySchema } from "@/utils/OpenCreateProject"
 import { useFileStore } from "@/stores/useFileStore"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { ChevronRightIcon, FileIcon, FolderIcon } from "lucide-react"

@@ -60,7 +60,7 @@ function App() {
     <section className="h-screen overflow-hidden flex flex-col bg-background">
       <Titlebar />
 
-      <div className="flex flex-1 items-center">
+      <div className="flex flex-1 items-center overflow-clip">
         <Sidebar
           selected={selected}
           setSelected={setSelected}
@@ -83,18 +83,18 @@ function App() {
 
           <Panel className="flex flex-col justify-between items-center space-y-2">
             {
-              isProjectOpen 
+              isProjectOpen
                 ? <>
-                    <Filetab />
-                    <Editor
-                      className="flex-1"
-                      theme="vs-dark"
-                      height={"100%"}
-                      language="javascript"
-                      onMount={(editor: any) => {
-                        setEditor(editor);
-                      }} />
-                  </>
+                  <Filetab />
+                  <Editor
+                    className="flex-1"
+                    theme="vs-dark"
+                    height={"100%"}
+                    language="javascript"
+                    onMount={(editor: any) => {
+                      setEditor(editor);
+                    }} />
+                </>
                 : <EmptyEditor />
 
             }

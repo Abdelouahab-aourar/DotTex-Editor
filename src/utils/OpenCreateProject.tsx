@@ -1,7 +1,7 @@
 "use client"
 import { open } from '@tauri-apps/plugin-dialog';
 import { readDir, create } from "@tauri-apps/plugin-fs";
-import { join } from "@tauri-apps/api/path";
+import { basename, join } from "@tauri-apps/api/path";
 import { message } from '@tauri-apps/plugin-dialog';
 export const OpenProject = async (): Promise<DirectorySchema[]> => {
   const selectedPath = await open({
@@ -59,32 +59,49 @@ export const CreateProject = async (): Promise<DirectorySchema[]> => {
   const result = await readFolderAsTree(selectedPath);
   return result;
 }
-
-
-
 export interface DirectorySchema {
   name: string;
+  path: string;
   items?: DirectorySchema[];
 }
+
 const IGNORE_LIST = new Set(['node_modules']);
-async function readFolderAsTree(folderPath: string): Promise<DirectorySchema[]> {
+
+export async function readFolderAsTree(folderPath: string): Promise<DirectorySchema[]> {
   const entries = await readDir(folderPath);
-  const visibleEntries = entries.filter(entry => !entry.name.startsWith('.') && !IGNORE_LIST.has(entry.name) );
-  return Promise.all(
+
+  const visibleEntries = entries.filter(
+    entry =>
+      !entry.name.startsWith('.') &&
+      !IGNORE_LIST.has(entry.name)
+  );
+
+  const items = await Promise.all(
     visibleEntries.map(async (entry): Promise<DirectorySchema> => {
       const newPath = await join(folderPath, entry.name);
 
       if (entry.isDirectory) {
-        const items = await readFolderAsTree(newPath);
+        const subItems = await readFolderAsTree(newPath);
+
         return {
           name: entry.name,
-          items
+          path: newPath,
+          items: subItems[0].items
         };
       }
 
       return {
-        name: entry.name
+        name: entry.name,
+        path: newPath
       };
     })
   );
+
+  return [
+    {
+      name: await basename(folderPath),
+      path: folderPath,
+      items
+    }
+  ];
 }

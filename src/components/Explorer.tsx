@@ -12,7 +12,7 @@ export const Explorer = ({ selected }: ExplorerProps) => {
     };
 
     return (
-        <div className="h-full">    
+        <div className="flex flex-col h-full min-h-0">    
             {selected !== null && panels[selected]}
         </div>
     )

@@ -17,7 +17,7 @@ export const Filetab = () => {
 
 
             <div className="flex items-center justify-around">
-                <HoverCard>
+                <HoverCard openDelay={0} closeDelay={0}>
                     <HoverCardTrigger>
                         <Button variant="ghost" size="icon">
                             <FileCheckCorner />
@@ -27,7 +27,7 @@ export const Filetab = () => {
                         Build PDF
                     </HoverCardContent>
                 </HoverCard>
-                <HoverCard>
+                <HoverCard openDelay={0} closeDelay={0}>
                     <HoverCardTrigger>
                         <Button variant="ghost" size="icon">
                             <Columns2 />

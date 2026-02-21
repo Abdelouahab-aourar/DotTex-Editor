@@ -1,15 +1,15 @@
 import { Columns2, FileCheckCorner } from "lucide-react"
 import { Button } from "./ui/button"
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "./ui/hover-card"
-
-
+import { useFileStore } from "@/stores/useFileStore"
 
 export const Filetab = () => {
+    const { mainFile } = useFileStore()
 
     return (
         <div className="select-none flex justify-between items-center bg-background border-b border-b-border px-4 h-10 w-full">
             <div className="flex justify-between items-center">
-                document.tex
+                {mainFile}
                 <div className="w-2 h-2 rounded-full bg-text mx-3">
 
                 </div>

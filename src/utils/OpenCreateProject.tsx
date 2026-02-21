@@ -3,45 +3,43 @@ import { open } from '@tauri-apps/plugin-dialog';
 import { readDir, create } from "@tauri-apps/plugin-fs";
 import { basename, join } from "@tauri-apps/api/path";
 import { message } from '@tauri-apps/plugin-dialog';
-export const OpenProject = async (): Promise<DirectorySchema[]> => {
+interface OpenProjectResult {
+  fileTree: DirectorySchema[];
+  mainFile: string;
+}
+export const OpenProject = async (): Promise<OpenProjectResult | null> => {
   const selectedPath = await open({
     multiple: false,
     directory: true,
   });
   if (!selectedPath) {
     await message('No Folder Selected', { title: 'tex-ide', kind: 'info' });
-    return [];
+    return null;
   }
   const entries = await readDir(selectedPath);
   const texFiles = entries.filter(entry =>
     entry.name?.toLowerCase().endsWith(".tex")
   );
-  if (texFiles.length == 0) {
-    await message('Folder must contain one .tex file', {
-      title: 'tex-ide',
-      kind: 'error'
-    });
-    return [];
+  if (texFiles.length === 0) {
+    await message('Folder must contain one .tex file', { title: 'tex-ide', kind: 'error' });
+    return null;
   }
-  else if (texFiles.length > 1) {
-    await message('Folder must contain only one .tex file', {
-      title: 'tex-ide',
-      kind: 'error'
-    });
-    return [];
+  if (texFiles.length > 1) {
+    await message('Folder must contain only one .tex file', { title: 'tex-ide', kind: 'error' });
+    return null;
   }
-  const result = await readFolderAsTree(selectedPath);
-  return result;
+  const fileTree = await readFolderAsTree(selectedPath);
+  const mainFile = texFiles[0].name || "";
+  return { fileTree, mainFile };
 }
-
-export const CreateProject = async (): Promise<DirectorySchema[]> => {
+export const CreateProject = async (): Promise<DirectorySchema[] | null> => {
   const selectedPath = await open({
     multiple: false,
     directory: true,
   });
   if (!selectedPath) {
     await message('No Folder Selected', { title: 'tex-ide', kind: 'info' });
-    return [];
+    return null;
   }
   const entries = await readDir(selectedPath);
   const texFiles = entries.filter(entry =>
@@ -52,7 +50,7 @@ export const CreateProject = async (): Promise<DirectorySchema[]> => {
       title: 'tex-ide',
       kind: 'error'
     });
-    return [];
+    return null;
   }
   const mainFilePath = await join(selectedPath, 'main.tex');
   await create(mainFilePath);

@@ -14,10 +14,6 @@ export const RunDropdown = () => {
                 Preview PDF
                 <DropdownMenuShortcut>F12</DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-                Open PDF
-                <DropdownMenuShortcut>ctrl+F12</DropdownMenuShortcut>
-            </DropdownMenuItem>
         </DropdownMenuContent>
     )
 

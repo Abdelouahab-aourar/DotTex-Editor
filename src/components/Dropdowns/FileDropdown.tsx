@@ -4,19 +4,21 @@ import { useFileStore } from "@/stores/useFileStore";
 
 
 export const FileDropdown = () => {
-    const {setFolderTree, setProjectOpen} = useFileStore();    
+    const {setFolderTree, setProjectOpen, setMainFile} = useFileStore();    
     const handleOpen = async () => {
         const tree = await OpenProject()
-        if(tree.length > 0){
-            setFolderTree(tree)
+        if(tree && tree.fileTree.length > 0){
+            setFolderTree(tree.fileTree)
             setProjectOpen(true)
+            setMainFile(tree.mainFile)
         }
     }
     const handleCreate = async () => {
         const tree = await CreateProject()
-        if(tree.length > 0){
+        if(tree && tree.length > 0){
             setFolderTree(tree)
             setProjectOpen(true)
+            setMainFile("main.tex")
         }
     }
     const closeProject = () => {
@@ -27,11 +29,11 @@ export const FileDropdown = () => {
         <DropdownMenuContent className="w-60" align="start">
             <DropdownMenuItem onClick={() => handleCreate()}>
                 New Project
-                <DropdownMenuShortcut>ctrl+N</DropdownMenuShortcut>
+                <DropdownMenuShortcut>Ctrl+N</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleOpen()}>
                 Open Project
-                <DropdownMenuShortcut>ctrl+O</DropdownMenuShortcut>
+                <DropdownMenuShortcut>Ctrl+O</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => closeProject()}>
                 Close Project

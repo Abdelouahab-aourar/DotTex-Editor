@@ -9,21 +9,25 @@ export const EditDropdown = () => {
 
     return (
         <DropdownMenuContent className="w-60" align="start">
+            <DropdownMenuItem>
+                Save
+                <DropdownMenuShortcut>Ctrl+S</DropdownMenuShortcut>
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={undo}>
                 Undo
-                <DropdownMenuShortcut>ctrl+Z</DropdownMenuShortcut>
+                <DropdownMenuShortcut>Ctrl+Z</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={redo}>
                 Redo
-                <DropdownMenuShortcut>ctrl+Y</DropdownMenuShortcut>
+                <DropdownMenuShortcut>Ctrl+Y</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={find}>
                 Find
-                <DropdownMenuShortcut>ctrl+F</DropdownMenuShortcut>
+                <DropdownMenuShortcut>Ctrl+F</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={replace}>
                 Replace
-                <DropdownMenuShortcut>ctrl+H</DropdownMenuShortcut>
+                <DropdownMenuShortcut>Ctrl+H</DropdownMenuShortcut>
             </DropdownMenuItem>
         </DropdownMenuContent>
     )

@@ -11,18 +11,18 @@ interface FileState {
 
   isProjectOpen: boolean;
   folderTree: FileItem[];
-
+  mainFile: String;
+  setMainFile: (file: String) => void;
   setProjectOpen: (isOpen: boolean) => void;
   setFolderTree: (tree: FileItem[]) => void;
   refreshTree: () => void;
-
 }
 
 export const useFileStore = create<FileState>((set, get) => ({
-
+  mainFile: "",
   isProjectOpen: false,
   folderTree: [],
-
+  setMainFile: (file) => set({ mainFile: file }),
   setProjectOpen: (isOpen) => set({ isProjectOpen: isOpen }),
   setFolderTree: (tree) => {
     const sortedTree = sortTree(tree);

@@ -14,7 +14,7 @@ interface FileState {
 
   setProjectOpen: (isOpen: boolean) => void;
   setFolderTree: (tree: FileItem[]) => void;
-  refreshTree: () => void
+  refreshTree: () => void;
 
 }
 

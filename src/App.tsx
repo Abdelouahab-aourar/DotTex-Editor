@@ -19,7 +19,7 @@ function App() {
   const lastSelected = useRef<number | null>(0);
   const expandMethod = useRef<"click" | "drag" | null>(null);
 
-  const { setEditor } = useEditorStore();
+  const { setEditor, content, setContent } = useEditorStore();
 
   const ref = usePanelRef();
 
@@ -90,6 +90,8 @@ function App() {
                     className="flex-1"
                     theme="vs-dark"
                     height={"100%"}
+                    value={content}
+                    onChange={(e) => setContent(e)}
                     onMount={(editor: any) => {
                       setEditor(editor);
                     }} />

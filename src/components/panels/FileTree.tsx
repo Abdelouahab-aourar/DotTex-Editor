@@ -87,21 +87,26 @@ export function FileTree() {
                             </CollapsibleContent>
                         </Collapsible>
                     </ContextMenuTrigger>
-                    <FileTreeContextMenu createFolderSetup={createFolderSetup} />
+                    <FileTreeContextMenu createFolderSetup={createFolderSetup} fileItem={fileItem} />
                 </ContextMenu>
 
             )
         }
         return (
-            <Button
-                key={fileItem.name}
-                variant="link"
-                size="sm"
-                className="text-foreground w-full justify-start gap-2"
-            >
-                <FileIcon />
-                <span className="text-text">{fileItem.name}</span>
-            </Button>
+            <ContextMenu>
+                <ContextMenuTrigger>
+                    <Button
+                        key={fileItem.name}
+                        variant="link"
+                        size="sm"
+                        className="text-foreground w-full justify-start gap-2"
+                    >
+                        <FileIcon />
+                        <span className="text-text">{fileItem.name}</span>
+                    </Button>
+                </ContextMenuTrigger>
+                <FileTreeContextMenu createFolderSetup={() => null} fileItem={fileItem} />
+            </ContextMenu>
         )
     }
 

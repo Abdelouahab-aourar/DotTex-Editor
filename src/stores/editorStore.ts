@@ -10,6 +10,11 @@ interface EditorState {
     editor: any | null
     setEditor: (editor: any) => void
 
+    content: string
+    getContent: () => string
+    setContent: (c: string | undefined) => void
+
+
     undo: () => void
     redo: () => void
     find: () => void
@@ -35,6 +40,10 @@ export const useEditorStore = create<EditorState>((set, get) => ({
         })
 
     },
+
+    content: "",
+    getContent: () => get().content,
+    setContent: (c: string | undefined) => set({ content: c ? c : "" }),
 
     undo: () => get().editor?.trigger("keyboard", "undo", null),
     redo: () => get().editor?.trigger("keyboard", "redo", null),

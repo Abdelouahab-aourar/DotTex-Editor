@@ -1,4 +1,4 @@
-import { mkdir, exists, copyFile, rename } from "@tauri-apps/plugin-fs";
+import { mkdir, exists, copyFile, rename, readDir, stat } from "@tauri-apps/plugin-fs";
 import { join } from "@tauri-apps/api/path";
 import { message } from "@tauri-apps/plugin-dialog"
 
@@ -34,14 +34,19 @@ export const copyItem = async (
   try {
     const destinationPath = await join(destinationParentPath, name);
 
-    const alreadyExists = await exists(destinationPath);
-    if (alreadyExists) {
+    if (await exists(destinationPath)) {
       throw new Error("Destination already exists");
     }
 
-    await copyFile(sourcePath, destinationPath);
+    const info = await stat(sourcePath);
+
+    if (info.isDirectory) 
+      await copyDirectoryRecursive(sourcePath, destinationPath);
+    else 
+      await copyFile(sourcePath, destinationPath);
 
     return destinationPath;
+
   } catch (error) {
     await message("Failed to copy: " + error, {
       title: "tex-ide",
@@ -73,5 +78,25 @@ export const moveItem = async (
       kind: "error",
     });
     throw error;
+  }
+};
+
+const copyDirectoryRecursive = async (
+  sourceDir: string,
+  destinationDir: string
+) => {
+  await mkdir(destinationDir);
+
+  const entries = await readDir(sourceDir);
+
+  for (const entry of entries) {
+    const srcPath = await join(sourceDir, entry.name);
+    const destPath = await join(destinationDir, entry.name);
+
+    if (entry.isDirectory) {
+      await copyDirectoryRecursive(srcPath, destPath);
+    } else {
+      await copyFile(srcPath, destPath);
+    }
   }
 };

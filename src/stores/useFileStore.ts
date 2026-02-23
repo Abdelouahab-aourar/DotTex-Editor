@@ -1,5 +1,7 @@
 import { readFolderAsTree } from '@/utils/OpenCreateProject';
 import { create } from 'zustand';
+import { copyItem, moveItem } from '@/utils/FileTreeUtils';
+import { basename } from '@tauri-apps/api/path';
 
 interface FileItem {
   name: string;
@@ -12,10 +14,23 @@ interface FileState {
   isProjectOpen: boolean;
   folderTree: FileItem[];
   mainFile: String;
+
   setMainFile: (file: String) => void;
   setProjectOpen: (isOpen: boolean) => void;
   setFolderTree: (tree: FileItem[]) => void;
   refreshTree: () => void;
+
+  sourcePath: string;
+  destinationPath: string;
+  action: "copy" | "move" | "none";
+
+  setSourcePath: (sp: string) => void
+  setDestinationPath: (dp: string) => void;
+  setAction: (a: "copy" | "move" | "none") => void;
+
+  doAction: () => void
+
+
 }
 
 export const useFileStore = create<FileState>((set, get) => ({
@@ -31,6 +46,26 @@ export const useFileStore = create<FileState>((set, get) => ({
   refreshTree: async () => {
     const updatedTree = await readFolderAsTree(get().folderTree[0].path);
     get().setFolderTree(updatedTree);
+  },
+
+  sourcePath: "",
+  destinationPath: "",
+  action: "none",
+
+  setSourcePath: (sp: string) => set({ sourcePath: sp }),
+  setDestinationPath: (dp: string) => set({ destinationPath: dp }),
+  setAction: (a: "copy" | "move" | "none") => set({ action: a }),
+
+  doAction: async () => {
+    if (get().sourcePath.length === 0 || get().destinationPath.length === 0)
+      return;
+
+    if (get().action === "move")
+      await moveItem(get().sourcePath, get().destinationPath, await basename(get().sourcePath))
+
+    if (get().action === "copy")
+      await copyItem(get().sourcePath, get().destinationPath, await basename(get().sourcePath))
+
   }
 
 }));

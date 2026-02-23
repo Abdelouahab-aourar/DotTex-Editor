@@ -1,9 +1,14 @@
+import { useFileStore } from "@/stores/useFileStore";
 import { ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut } from "../ui/context-menu"
+import { DirectorySchema } from "@/utils/OpenCreateProject";
 
 type Props = {
     createFolderSetup: () => void;
+    fileItem: DirectorySchema;
 }
-export const FileTreeContextMenu = ({ createFolderSetup} : Props) => {
+export const FileTreeContextMenu = ({ createFolderSetup, fileItem }: Props) => {
+
+    const { setSourcePath, setDestinationPath, setAction, doAction, refreshTree } = useFileStore()
 
     return (
         <ContextMenuContent className="w-50">
@@ -18,17 +23,28 @@ export const FileTreeContextMenu = ({ createFolderSetup} : Props) => {
 
             <ContextMenuSeparator />
 
-            <ContextMenuItem>
+            <ContextMenuItem onClick={() => {
+                setSourcePath(fileItem.path);
+                setAction("move");
+            }}>
                 Cut
-                <ContextMenuShortcut>ctrl + c</ContextMenuShortcut>
-            </ContextMenuItem>
-
-            <ContextMenuItem>
-                Copy
                 <ContextMenuShortcut>ctrl + x</ContextMenuShortcut>
             </ContextMenuItem>
 
-            <ContextMenuItem>
+            <ContextMenuItem onClick={() => {
+                console.log("COPYING:", fileItem.name, fileItem.path);
+                setSourcePath(fileItem.path);
+                setAction("copy");
+            }}>
+                Copy
+                <ContextMenuShortcut>ctrl + c</ContextMenuShortcut>
+            </ContextMenuItem>
+
+            <ContextMenuItem disabled={!fileItem.items} onClick={async () => {
+                setDestinationPath(fileItem.path);
+                await doAction();
+                await refreshTree();
+            }}>
                 Paste
                 <ContextMenuShortcut>ctrl + v</ContextMenuShortcut>
             </ContextMenuItem>
@@ -45,7 +61,7 @@ export const FileTreeContextMenu = ({ createFolderSetup} : Props) => {
                 <ContextMenuShortcut>del</ContextMenuShortcut>
             </ContextMenuItem>
 
-        </ContextMenuContent>
+        </ContextMenuContent >
 
     )
 

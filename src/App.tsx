@@ -90,7 +90,6 @@ function App() {
                     className="flex-1"
                     theme="vs-dark"
                     height={"100%"}
-                    language="javascript"
                     onMount={(editor: any) => {
                       setEditor(editor);
                     }} />

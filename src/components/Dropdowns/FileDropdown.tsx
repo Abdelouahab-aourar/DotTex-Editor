@@ -24,6 +24,7 @@ export const FileDropdown = () => {
     const closeProject = () => {
         setFolderTree([])
         setProjectOpen(false)
+        setMainFile("")
     }
     return (
         <DropdownMenuContent className="w-60" align="start">

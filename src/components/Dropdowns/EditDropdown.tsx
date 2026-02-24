@@ -9,10 +9,6 @@ export const EditDropdown = () => {
 
     return (
         <DropdownMenuContent className="w-60" align="start">
-            <DropdownMenuItem>
-                Save
-                <DropdownMenuShortcut>Ctrl+S</DropdownMenuShortcut>
-            </DropdownMenuItem>
             <DropdownMenuItem onClick={undo}>
                 Undo
                 <DropdownMenuShortcut>Ctrl+Z</DropdownMenuShortcut>

@@ -4,17 +4,17 @@ import { Sidebar } from "./components/Sidebar";
 import { Explorer } from "./components/Explorer";
 import { Titlebar } from "./components/Titlebar";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Panel, Group, usePanelRef, PanelSize } from "react-resizable-panels";
 import { useEditorStore } from "./stores/editorStore";
 import { Filetab } from "./components/Filetab";
 import { useFileStore } from "./stores/useFileStore";
 import { EmptyEditor } from "./components/EmptyEditor";
-
+import { readTextFile } from "@tauri-apps/plugin-fs";
 function App() {
   const [selected, setSelected] = useState<number | null>(null);
 
-  const { isProjectOpen } = useFileStore();
+  const { isProjectOpen, mainFilePath } = useFileStore();
 
   const lastSelected = useRef<number | null>(0);
   const expandMethod = useRef<"click" | "drag" | null>(null);
@@ -56,6 +56,14 @@ function App() {
     }
   };
 
+
+  useEffect(() => {
+  const loadFile = async () => {
+    const fileData = await readTextFile(mainFilePath)
+    setContent(fileData);
+  };
+  loadFile();
+}, [mainFilePath]);
   return (
     <section className="h-screen overflow-hidden flex flex-col bg-background">
       <Titlebar />

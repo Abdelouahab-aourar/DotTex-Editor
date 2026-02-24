@@ -4,10 +4,12 @@ import { HoverCard, HoverCardTrigger, HoverCardContent } from "./ui/hover-card"
 import { useFileStore } from "@/stores/useFileStore"
 import { useEditorStore }from "@/stores/editorStore"
 import { invoke } from "@tauri-apps/api/core"
+import { writeTextFile } from "@tauri-apps/plugin-fs"
 export const Filetab = () => {
     const { mainFilePath, mainFileName } = useFileStore()
     const { getContent } = useEditorStore()
     const buildPDF = async () => {
+        await writeTextFile(mainFilePath, getContent())
         await invoke("compile_latex", {texPath: mainFilePath});
         console.log(getContent())
     }

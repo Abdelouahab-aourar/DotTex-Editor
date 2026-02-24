@@ -5,7 +5,8 @@ import { basename, join } from "@tauri-apps/api/path";
 import { message } from '@tauri-apps/plugin-dialog';
 interface OpenProjectResult {
   fileTree: DirectorySchema[];
-  mainFile: string;
+  mainFilePath: string;
+  mainFileName: string;
 }
 export const OpenProject = async (): Promise<OpenProjectResult | null> => {
   const selectedPath = await open({
@@ -29,10 +30,11 @@ export const OpenProject = async (): Promise<OpenProjectResult | null> => {
     return null;
   }
   const fileTree = await readFolderAsTree(selectedPath);
-  const mainFile = texFiles[0].name || "";
-  return { fileTree, mainFile };
+  const fileName = texFiles[0].name || "";
+  const filePath = await join(selectedPath ,fileName) || "";
+  return { fileTree, mainFilePath: filePath, mainFileName: fileName };
 }
-export const CreateProject = async (): Promise<DirectorySchema[] | null> => {
+export const CreateProject = async (): Promise<OpenProjectResult | null> => {
   const selectedPath = await open({
     multiple: false,
     directory: true,
@@ -52,10 +54,10 @@ export const CreateProject = async (): Promise<DirectorySchema[] | null> => {
     });
     return null;
   }
-  const mainFilePath = await join(selectedPath, 'main.tex');
-  await create(mainFilePath);
-  const result = await readFolderAsTree(selectedPath);
-  return result;
+  const filePath = await join(selectedPath, 'main.tex');
+  await create(filePath);
+  const fileTree = await readFolderAsTree(selectedPath);
+  return {fileTree, mainFilePath: filePath, mainFileName: "main.tex"};
 }
 export interface DirectorySchema {
   name: string;

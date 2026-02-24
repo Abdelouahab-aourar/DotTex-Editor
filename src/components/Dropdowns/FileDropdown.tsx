@@ -4,27 +4,30 @@ import { useFileStore } from "@/stores/useFileStore";
 
 
 export const FileDropdown = () => {
-    const {setFolderTree, setProjectOpen, setMainFile} = useFileStore();    
+    const {setFolderTree, setProjectOpen, setMainFilePath, setMainFileName} = useFileStore();    
     const handleOpen = async () => {
         const tree = await OpenProject()
         if(tree && tree.fileTree.length > 0){
             setFolderTree(tree.fileTree)
             setProjectOpen(true)
-            setMainFile(tree.mainFile)
+            setMainFilePath(tree.mainFilePath)
+            setMainFileName(tree.mainFileName)
         }
     }
     const handleCreate = async () => {
         const tree = await CreateProject()
-        if(tree && tree.length > 0){
-            setFolderTree(tree)
+        if(tree && tree.fileTree.length > 0){
+            setFolderTree(tree.fileTree)
             setProjectOpen(true)
-            setMainFile("main.tex")
+            setMainFilePath(tree.mainFilePath)
+            setMainFileName(tree.mainFileName)
         }
     }
     const closeProject = () => {
         setFolderTree([])
         setProjectOpen(false)
-        setMainFile("")
+        setMainFilePath("")
+        setMainFileName("")
     }
     return (
         <DropdownMenuContent className="w-60" align="start">

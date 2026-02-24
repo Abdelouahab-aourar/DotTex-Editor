@@ -1,9 +1,9 @@
-use tauri::{AppHandle, Emitter, Manager};
-use tauri_plugin_shell::process::CommandEvent;
+// use tauri::{AppHandle, Emitter, Manager};
+// use tauri_plugin_shell::process::CommandEvent;
 use tauri_plugin_shell::ShellExt;
 
-#[tauri::command]
-async fn start_texlab(app_handle: AppHandle) {
+// #[tauri::command]
+// async fn start_texlab(app_handle: AppHandle) {
     // let sidecar_command = app_handle
     //     .shell()
     //     .sidecar("texlab")
@@ -27,25 +27,25 @@ async fn start_texlab(app_handle: AppHandle) {
     //         }
     //     }
     // });
-}
-
-// #[tauri::command]
-// async fn compile_latex(app: tauri::AppHandle, tex_path: String) -> Result<String, String> {
-//     let sidecar = app.shell().sidecar("tectonic")
-//         .map_err(|e| e.to_string())?;
-//     let output = sidecar
-//         .args(["-X", "compile", &tex_path])
-//         .output()
-//         .await
-//         .map_err(|e| format!("Failed to run Tectonic: {}", e))?;
-
-//     if output.status.success() {
-//         Ok("PDF generated successfully!".into())
-//     } else {
-//         let stderr = String::from_utf8_lossy(&output.stderr);
-//         Err(format!("Tectonic Error: {}", stderr))
-//     }
 // }
+
+#[tauri::command]
+async fn compile_latex(app: tauri::AppHandle, tex_path: String) -> Result<String, String> {
+    let sidecar = app.shell().sidecar("tectonic")
+        .map_err(|e| e.to_string())?;
+    let output = sidecar
+        .args(["-X", "compile", &tex_path])
+        .output()
+        .await
+        .map_err(|e| format!("Failed to run Tectonic: {}", e))?;
+
+    if output.status.success() {
+        Ok("PDF generated successfully!".into())
+    } else {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        Err(format!("Tectonic Error: {}", stderr))
+    }
+}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -54,7 +54,7 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![start_texlab])
+        .invoke_handler(tauri::generate_handler![compile_latex])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

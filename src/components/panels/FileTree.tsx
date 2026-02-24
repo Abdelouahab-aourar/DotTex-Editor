@@ -24,8 +24,7 @@ export function FileTree() {
             return (
                 <ContextMenu>
                     <ContextMenuTrigger>
-
-                        <Collapsible key={fileItem.name}>
+                        <Collapsible>
                             <CollapsibleTrigger asChild>
                                 <Button
                                     variant="ghost"
@@ -96,7 +95,6 @@ export function FileTree() {
             <ContextMenu>
                 <ContextMenuTrigger>
                     <Button
-                        key={fileItem.name}
                         variant="link"
                         size="sm"
                         className="text-foreground w-full justify-start gap-2"

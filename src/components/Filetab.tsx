@@ -2,14 +2,19 @@ import { Columns2, FileCheckCorner } from "lucide-react"
 import { Button } from "./ui/button"
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "./ui/hover-card"
 import { useFileStore } from "@/stores/useFileStore"
-
+import { useEditorStore }from "@/stores/editorStore"
+import { invoke } from "@tauri-apps/api/core"
 export const Filetab = () => {
-    const { mainFile } = useFileStore()
-
+    const { mainFilePath, mainFileName } = useFileStore()
+    const { getContent } = useEditorStore()
+    const buildPDF = async () => {
+        await invoke("compile_latex", {texPath: mainFilePath});
+        console.log(getContent())
+    }
     return (
         <div className="select-none flex justify-between items-center bg-background border-b border-b-border px-4 h-10 w-full">
             <div className="flex justify-between items-center">
-                {mainFile}
+                {mainFileName}
                 <div className="w-2 h-2 rounded-full bg-text mx-3">
 
                 </div>
@@ -19,7 +24,7 @@ export const Filetab = () => {
             <div className="flex items-center justify-around">
                 <HoverCard openDelay={0} closeDelay={0}>
                     <HoverCardTrigger>
-                        <Button variant="ghost" size="icon">
+                        <Button variant="ghost" size="icon" onClick={buildPDF}>
                             <FileCheckCorner />
                         </Button>
                     </HoverCardTrigger>

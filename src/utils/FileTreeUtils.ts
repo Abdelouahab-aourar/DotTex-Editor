@@ -1,5 +1,5 @@
-import { mkdir, exists, copyFile, rename, readDir, stat } from "@tauri-apps/plugin-fs";
-import { join } from "@tauri-apps/api/path";
+import { mkdir, exists, copyFile, rename, readDir, stat, remove } from "@tauri-apps/plugin-fs";
+import { dirname, join } from "@tauri-apps/api/path";
 import { message } from "@tauri-apps/plugin-dialog"
 
 export const createFolder = async (
@@ -40,9 +40,9 @@ export const copyItem = async (
 
     const info = await stat(sourcePath);
 
-    if (info.isDirectory) 
+    if (info.isDirectory)
       await copyDirectoryRecursive(sourcePath, destinationPath);
-    else 
+    else
       await copyFile(sourcePath, destinationPath);
 
     return destinationPath;
@@ -81,6 +81,42 @@ export const moveItem = async (
   }
 };
 
+export const renameItem = async (
+  itemPath: string,
+  newName: string
+) => {
+  try {
+    const newFilePath = await join(await dirname(itemPath), newName);
+
+    const alreadyExists = await exists(newFilePath);
+    if(alreadyExists) throw "file with that name already exists"
+    
+    await rename(itemPath, newFilePath);
+
+  } catch (error) {
+    await message("Failed to delete: " + error, {
+      title: "tex-ide",
+      kind: "error",
+    });
+    throw error;
+  }
+}
+
+export const deleteItem = async (
+  itemPath: string
+) => {
+  try {
+    await remove(itemPath, { recursive: true });
+
+  } catch (error) {
+    await message("Failed to delete: " + error, {
+      title: "tex-ide",
+      kind: "error",
+    });
+    throw error;
+  }
+}
+
 const copyDirectoryRecursive = async (
   sourceDir: string,
   destinationDir: string
@@ -100,3 +136,4 @@ const copyDirectoryRecursive = async (
     }
   }
 };
+

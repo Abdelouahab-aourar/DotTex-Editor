@@ -30,8 +30,7 @@ interface FileState {
   setDestinationPath: (dp: string) => void;
   setAction: (a: "copy" | "move" | "none") => void;
 
-  doAction: () => void
-
+  doAction: () => void;
 
 }
 

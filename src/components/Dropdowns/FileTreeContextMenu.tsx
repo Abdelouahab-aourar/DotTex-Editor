@@ -1,21 +1,19 @@
 import { useFileStore } from "@/stores/useFileStore";
 import { ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut } from "../ui/context-menu"
 import { DirectorySchema } from "@/utils/OpenCreateProject";
+import { deleteItem } from "@/utils/FileTreeUtils";
 
 type Props = {
     createFolderSetup: () => void;
+    renameItemSetup: () => void;
     fileItem: DirectorySchema;
 }
-export const FileTreeContextMenu = ({ createFolderSetup, fileItem }: Props) => {
+export const FileTreeContextMenu = ({ createFolderSetup, renameItemSetup, fileItem }: Props) => {
 
     const { setSourcePath, setDestinationPath, setAction, doAction, refreshTree } = useFileStore()
 
     return (
         <ContextMenuContent className="w-50">
-
-            <ContextMenuItem>
-                New File...
-            </ContextMenuItem>
 
             <ContextMenuItem onClick={createFolderSetup}>
                 New Folder...
@@ -32,7 +30,6 @@ export const FileTreeContextMenu = ({ createFolderSetup, fileItem }: Props) => {
             </ContextMenuItem>
 
             <ContextMenuItem onClick={() => {
-                console.log("COPYING:", fileItem.name, fileItem.path);
                 setSourcePath(fileItem.path);
                 setAction("copy");
             }}>
@@ -51,12 +48,15 @@ export const FileTreeContextMenu = ({ createFolderSetup, fileItem }: Props) => {
 
             <ContextMenuSeparator />
 
-            <ContextMenuItem>
+            <ContextMenuItem onClick={renameItemSetup}>
                 Rename...
                 <ContextMenuShortcut>F2</ContextMenuShortcut>
             </ContextMenuItem>
 
-            <ContextMenuItem>
+            <ContextMenuItem onClick={async () => {
+                await deleteItem(fileItem.path);
+                await refreshTree();
+            }}>
                 Delete
                 <ContextMenuShortcut>del</ContextMenuShortcut>
             </ContextMenuItem>

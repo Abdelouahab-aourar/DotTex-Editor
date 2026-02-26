@@ -1,9 +1,12 @@
 import { useEditorStore } from "@/stores/editorStore"
-import { DropdownMenuContent, DropdownMenuItem, DropdownMenuShortcut } from "../ui/dropdown-menu"
+import { DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuShortcut } from "../ui/dropdown-menu"
+
+type Props = {
+    toggleConsole: () => void
+}
 
 
-
-export const EditDropdown = () => {
+export const EditDropdown = ({ toggleConsole } : Props) => {
 
     const { undo, redo, find, replace } = useEditorStore()
 
@@ -25,6 +28,12 @@ export const EditDropdown = () => {
                 Replace
                 <DropdownMenuShortcut>Ctrl+H</DropdownMenuShortcut>
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={toggleConsole}>
+                Toggle Console
+                <DropdownMenuShortcut>Ctrl+J</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            
         </DropdownMenuContent>
     )
 

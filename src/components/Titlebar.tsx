@@ -7,6 +7,11 @@ import { FileDropdown } from "./Dropdowns/FileDropdown";
 import { EditDropdown } from "./Dropdowns/EditDropdown";
 import { RunDropdown } from "./Dropdowns/RunDropdown";
 
+
+type Props = {
+    toggleConsole: () => void
+}
+
 const appWindow = getCurrentWindow();
 
 async function minimize() {
@@ -19,7 +24,8 @@ async function toggleMaximize() {
 async function closeWindow() {
     await appWindow.close();
 }
-export const Titlebar = () => {
+
+export const Titlebar = ({ toggleConsole } : Props) => {
     const windowControls = [
         {
             btn: Minus,
@@ -60,7 +66,7 @@ export const Titlebar = () => {
                                     <DropdownMenuTrigger asChild>
                                         <Button variant="ghost">{tool.label}</Button>
                                     </DropdownMenuTrigger>
-                                    <Content />
+                                    <Content toggleConsole={toggleConsole}/>
                                 </DropdownMenu>)
                         })
                     }

@@ -11,6 +11,7 @@ import { Filetab } from "./components/Filetab";
 import { useFileStore } from "./stores/useFileStore";
 import { EmptyEditor } from "./components/EmptyEditor";
 import { readTextFile } from "@tauri-apps/plugin-fs";
+import { Console } from "./components/Console";
 function App() {
   const [selected, setSelected] = useState<number | null>(null);
 
@@ -22,6 +23,11 @@ function App() {
   const { setEditor, content, setContent } = useEditorStore();
 
   const ref = usePanelRef();
+
+  const consoleRef = usePanelRef();
+  const toggleConsole = () => {
+    consoleRef.current?.isCollapsed() ? consoleRef.current?.expand() : consoleRef.current?.collapse(); 
+  }
 
   const collapsePanel = () => {
     ref.current?.collapse();
@@ -58,15 +64,15 @@ function App() {
 
 
   useEffect(() => {
-  const loadFile = async () => {
-    const fileData = await readTextFile(mainFilePath)
-    setContent(fileData);
-  };
-  loadFile();
-}, [mainFilePath]);
+    const loadFile = async () => {
+      const fileData = await readTextFile(mainFilePath)
+      setContent(fileData);
+    };
+    loadFile();
+  }, [mainFilePath]);
   return (
     <section className="h-screen overflow-hidden flex flex-col bg-background">
-      <Titlebar />
+      <Titlebar toggleConsole={toggleConsole} />
 
       <div className="flex flex-1 items-center overflow-clip">
         <Sidebar
@@ -89,21 +95,32 @@ function App() {
             <Explorer selected={selected} />
           </Panel>
 
-          <Panel className="flex flex-col justify-between items-center space-y-2">
+          <Panel>
             {
               isProjectOpen
-                ? <>
-                  <Filetab />
-                  <Editor
-                    className="flex-1"
-                    theme="vs-dark"
-                    height={"100%"}
-                    value={content}
-                    onChange={(e) => setContent(e)}
-                    onMount={(editor: any) => {
-                      setEditor(editor);
-                    }} />
-                </>
+                ? <Group orientation="vertical">
+                  <Panel className="flex flex-col justify-between items-center space-y-2">
+                    <Filetab />
+                    <Editor
+                      className="flex-1"
+                      theme="vs-dark"
+                      height={"100%"}
+                      value={content}
+                      onChange={(e) => setContent(e)}
+                      onMount={(editor: any) => {
+                        setEditor(editor);
+                      }} />
+                  </Panel>
+                  <Panel
+                    panelRef={consoleRef}
+                    defaultSize={"15%"}
+                    collapsible
+                    minSize={150}
+                    maxSize="70%"
+                  >
+                    <Console />
+                  </Panel>
+                </Group>
                 : <EmptyEditor />
 
             }

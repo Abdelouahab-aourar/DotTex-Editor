@@ -9,9 +9,14 @@ export const Filetab = () => {
     const { mainFilePath, mainFileName } = useFileStore()
     const { getContent } = useEditorStore()
     const buildPDF = async () => {
-        await writeTextFile(mainFilePath, getContent())
-        await invoke("compile_latex", {texPath: mainFilePath});
-        console.log(getContent())
+        try {
+            await writeTextFile(mainFilePath, getContent())
+            console.log("Compiling ...")
+            await invoke("compile_latex", {texPath: mainFilePath});
+            console.log(getContent())
+        } catch (error) {
+            console.log(`an error occured. ${error}`)
+        }
     }
     return (
         <div className="select-none flex justify-between items-center bg-background border-b border-b-border px-4 h-10 w-full">

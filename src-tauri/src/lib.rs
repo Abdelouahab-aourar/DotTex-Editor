@@ -1,7 +1,8 @@
 // use tauri::{AppHandle, Emitter, Manager};
 // use tauri_plugin_shell::process::CommandEvent;
 use tauri_plugin_shell::ShellExt;
-
+mod db;
+use db::{init_db};
 // #[tauri::command]
 // async fn start_texlab(app_handle: AppHandle) {
     // let sidecar_command = app_handle
@@ -54,6 +55,11 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_opener::init())
+        .setup(|_app| {
+            init_db().expect("Failed to initialize database");
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![compile_latex])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

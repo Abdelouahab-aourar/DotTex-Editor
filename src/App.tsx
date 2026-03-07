@@ -11,7 +11,10 @@ import { Filetab } from "./components/Filetab";
 import { useFileStore } from "./stores/useFileStore";
 import { EmptyEditor } from "./components/EmptyEditor";
 import { readTextFile } from "@tauri-apps/plugin-fs";
-import { Console } from "./components/Console";
+import { Console } from "./components/panels/Console";
+import { Preview } from "./components/panels/Preview";
+
+
 function App() {
   const [selected, setSelected] = useState<number | null>(null);
 
@@ -27,6 +30,11 @@ function App() {
   const consoleRef = usePanelRef();
   const toggleConsole = () => {
     consoleRef.current?.isCollapsed() ? consoleRef.current?.expand() : consoleRef.current?.collapse(); 
+  }
+
+  const previewRef = usePanelRef();
+  const togglePreview = () => {
+    previewRef.current?.isCollapsed() ? previewRef.current?.expand() : previewRef.current?.collapse();
   }
 
   const collapsePanel = () => {
@@ -98,27 +106,40 @@ function App() {
           <Panel>
             {
               isProjectOpen
-                ? <Group orientation="vertical">
-                  <Panel className="flex flex-col justify-between items-center space-y-2">
-                    <Filetab />
-                    <Editor
-                      className="flex-1"
-                      theme="vs-dark"
-                      height={"100%"}
-                      value={content}
-                      onChange={(e) => setContent(e)}
-                      onMount={(editor: any) => {
-                        setEditor(editor);
-                      }} />
+                ? <Group orientation="horizontal">
+                  <Panel>
+                    <Group orientation="vertical">
+                      <Panel className="flex flex-col justify-between items-center space-y-2">
+                        <Filetab togglePreview={togglePreview} />
+                        <Editor
+                          className="flex-1"
+                          theme="vs-dark"
+                          height={"100%"}
+                          value={content}
+                          onChange={(e) => setContent(e)}
+                          onMount={(editor: any) => {
+                            setEditor(editor);
+                          }} />
+                      </Panel>
+                      <Panel
+                        panelRef={consoleRef}
+                        defaultSize={"15%"}
+                        collapsible
+                        minSize={150}
+                        maxSize="70%"
+                      >
+                        <Console />
+                      </Panel>
+                    </Group>
                   </Panel>
                   <Panel
-                    panelRef={consoleRef}
-                    defaultSize={"15%"}
+                    panelRef={previewRef}
+                    defaultSize="0%"
                     collapsible
                     minSize={150}
                     maxSize="70%"
                   >
-                    <Console />
+                    <Preview />
                   </Panel>
                 </Group>
                 : <EmptyEditor />

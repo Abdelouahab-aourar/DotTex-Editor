@@ -2,17 +2,25 @@ import { Columns2, FileCheckCorner } from "lucide-react"
 import { Button } from "./ui/button"
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "./ui/hover-card"
 import { useFileStore } from "@/stores/useFileStore"
-import { useEditorStore }from "@/stores/editorStore"
+import { useEditorStore } from "@/stores/editorStore"
 import { invoke } from "@tauri-apps/api/core"
 import { writeTextFile } from "@tauri-apps/plugin-fs"
-export const Filetab = () => {
+
+
+
+type Props = {
+    togglePreview: () => void
+}
+
+
+export const Filetab = ({ togglePreview }: Props) => {
     const { mainFilePath, mainFileName } = useFileStore()
     const { getContent } = useEditorStore()
     const buildPDF = async () => {
         try {
             await writeTextFile(mainFilePath, getContent())
             console.log("Compiling ...")
-            await invoke("compile_latex", {texPath: mainFilePath});
+            await invoke("compile_latex", { texPath: mainFilePath });
             console.log(getContent())
         } catch (error) {
             console.log(`an error occured. ${error}`)
@@ -41,7 +49,7 @@ export const Filetab = () => {
                 </HoverCard>
                 <HoverCard openDelay={0} closeDelay={0}>
                     <HoverCardTrigger>
-                        <Button variant="ghost" size="icon">
+                        <Button variant="ghost" size="icon" onClick={() => togglePreview()}>
                             <Columns2 />
                         </Button>
                     </HoverCardTrigger>

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import clsx from "clsx";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { useConsoleStore, LogLevel } from "@/stores/consoleStore";
 
 

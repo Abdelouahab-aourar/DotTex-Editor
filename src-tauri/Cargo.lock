@@ -3966,7 +3966,6 @@ name = "tex-ide"
 version = "0.1.0"
 dependencies = [
  "dirs-next",
- "once_cell",
  "rusqlite",
  "serde",
  "serde_json",

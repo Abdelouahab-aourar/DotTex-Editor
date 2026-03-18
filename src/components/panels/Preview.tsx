@@ -47,7 +47,7 @@ export const Preview = () => {
                     ],
                     theme: { preference: "dark" }
                 }}
-                style={{ height: "100%" }}
+                style={{ height: "95%" }}
             />
         </div>
 

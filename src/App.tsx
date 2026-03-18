@@ -81,7 +81,7 @@ function App() {
     <section className="h-screen flex flex-col bg-background">
       <Titlebar toggleConsole={toggleConsole} />
 
-      <div className="flex flex-1 items-center overflow-clip">
+      <div className="flex flex-1 h-[90vh] items-center overflow-clip">
         <Sidebar
           selected={selected}
           setSelected={setSelected}

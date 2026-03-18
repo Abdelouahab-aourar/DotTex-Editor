@@ -32,21 +32,24 @@ export const Preview = () => {
     )
 
     return (
-        <PDFViewer
-            config={{
-                src: pdfUrl,
-                disabledCategories: [
-                    "annotation",
-                    "redaction",
-                    "document-print",
-                    "document-export",
-                    "panel",
-                    "document",
-                    "page"
-                ],
-                theme: { preference: "dark" }
-            }}
-            style={{ height: "100%" }}
-        />
+    <div className="w-full h-screen overflow-y-auto overflow-x-hidden">
+            <PDFViewer
+                config={{
+                    src: pdfUrl,
+                    disabledCategories: [
+                        "annotation",
+                        "redaction",
+                        "document-print",
+                        "document-export",
+                        "panel",
+                        "document",
+                        "page"
+                    ],
+                    theme: { preference: "dark" }
+                }}
+                style={{ height: "100%" }}
+            />
+        </div>
+
     )
 }

@@ -187,7 +187,7 @@ export function FileTree() {
                     </HoverCardContent>
                 </HoverCard>
             </div>
-            <section className={`flex-1 min-h-0 overflow-y-auto ${!isProjectOpen ? "flex flex-col items-center" : ""}`}>
+            <section className={`flex-1 min-h-0 overflow-y-auto overflow-x-hidden ${!isProjectOpen ? "flex flex-col items-center" : ""}`}>
                 {
                     isProjectOpen
                         ? folderTree.map((item) => renderItem(item))

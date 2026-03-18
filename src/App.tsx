@@ -3,7 +3,6 @@ import { Editor } from "@monaco-editor/react";
 import { Sidebar } from "./components/Sidebar";
 import { Explorer } from "./components/Explorer";
 import { Titlebar } from "./components/Titlebar";
-
 import { useRef, useState, useEffect } from "react";
 import { Panel, Group, usePanelRef, PanelSize } from "react-resizable-panels";
 import { useEditorStore } from "./stores/editorStore";
@@ -79,7 +78,7 @@ function App() {
     loadFile();
   }, [mainFilePath]);
   return (
-    <section className="h-screen overflow-hidden flex flex-col bg-background">
+    <section className="h-screen flex flex-col bg-background">
       <Titlebar toggleConsole={toggleConsole} />
 
       <div className="flex flex-1 items-center overflow-clip">
@@ -97,7 +96,8 @@ function App() {
             panelRef={ref}
             collapsible
             minSize={150}
-            maxSize="70%"
+            className="h-[95vh]"
+            maxSize="50%"
             onResize={handlePanelResize}
           >
             <Explorer selected={selected} />
@@ -136,8 +136,8 @@ function App() {
                     panelRef={previewRef}
                     defaultSize="0%"
                     collapsible
-                    minSize={150}
-                    maxSize="70%"
+                    minSize={250}
+                    maxSize="50%"
                   >
                     <Preview />
                   </Panel>

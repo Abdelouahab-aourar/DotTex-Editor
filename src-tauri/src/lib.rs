@@ -2,7 +2,7 @@
 // use tauri_plugin_shell::process::CommandEvent;
 use tauri_plugin_shell::ShellExt;
 mod db;
-use db::{init_db, add_to_history};
+use db::{init_db, add_to_history, get_history};
 // #[tauri::command]
 // async fn start_texlab(app_handle: AppHandle) {
     // let sidecar_command = app_handle
@@ -62,7 +62,8 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             compile_latex, 
-            add_to_history
+            add_to_history,
+            get_history
             ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

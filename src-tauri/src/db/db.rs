@@ -44,3 +44,18 @@ pub fn add_to_history(path: String) -> Result<String, String> {
     .map_err(|e| e.to_string())?;
     Ok("Path added successfully".into())
 }
+
+#[tauri::command]
+pub fn get_history() -> Result<Vec<String>, String> {
+    let conn = connect()?;
+    let mut stmt = conn
+        .prepare("SELECT path FROM HISTORY ORDER BY id DESC")
+        .map_err(|e| e.to_string())?;
+
+    let paths = stmt
+        .query_map([], |row| row.get(0))
+        .map_err(|e| e.to_string())?
+        .collect::<Result<Vec<String>, _>>()
+        .map_err(|e| e.to_string())?;
+    Ok(paths)
+}

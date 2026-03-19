@@ -1,2 +1,2 @@
-pub mod init_db;
-pub use init_db::{init_db};
+pub mod db;
+pub use db::{init_db, add_to_history};

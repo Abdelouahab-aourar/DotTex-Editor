@@ -12,12 +12,12 @@ import { EmptyEditor } from "./components/EmptyEditor";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 import { Console } from "./components/panels/Console";
 import { Preview } from "./components/panels/Preview";
-
+import { OpenProjectOnStartup } from "./utils/OpenCreateProject";
 
 function App() {
   const [selected, setSelected] = useState<number | null>(null);
 
-  const { isProjectOpen, mainFilePath } = useFileStore();
+  const { isProjectOpen, mainFilePath, setProjectOpen, setMainFilePath, setMainFileName, setFolderTree } = useFileStore();
 
   const lastSelected = useRef<number | null>(0);
   const expandMethod = useRef<"click" | "drag" | null>(null);
@@ -28,7 +28,7 @@ function App() {
 
   const consoleRef = usePanelRef();
   const toggleConsole = () => {
-    consoleRef.current?.isCollapsed() ? consoleRef.current?.expand() : consoleRef.current?.collapse(); 
+    consoleRef.current?.isCollapsed() ? consoleRef.current?.expand() : consoleRef.current?.collapse();
   }
 
   const previewRef = usePanelRef();
@@ -77,6 +77,19 @@ function App() {
     };
     loadFile();
   }, [mainFilePath]);
+
+  useEffect(() => {
+    const handleOpen = async () => {
+            const tree = await OpenProjectOnStartup()
+            if(tree && tree.fileTree.length > 0){
+                setFolderTree(tree.fileTree)
+                setProjectOpen(true)
+                setMainFilePath(tree.mainFilePath)
+                setMainFileName(tree.mainFileName)
+            }
+    }
+    handleOpen();
+  }, []);
   return (
     <section className="h-screen flex flex-col bg-background">
       <Titlebar toggleConsole={toggleConsole} />

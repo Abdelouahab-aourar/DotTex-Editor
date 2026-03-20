@@ -49,7 +49,7 @@ pub fn add_to_history(path: String) -> Result<String, String> {
 pub fn get_history() -> Result<Vec<String>, String> {
     let conn = connect()?;
     let mut stmt = conn
-        .prepare("SELECT path FROM HISTORY ORDER BY id DESC")
+        .prepare("SELECT path FROM HISTORY ORDER BY id DESC LIMIT 5")
         .map_err(|e| e.to_string())?;
 
     let paths = stmt

@@ -3,6 +3,7 @@ import { open } from '@tauri-apps/plugin-dialog';
 import { readDir, create } from "@tauri-apps/plugin-fs";
 import { basename, join } from "@tauri-apps/api/path";
 import { message } from '@tauri-apps/plugin-dialog';
+import { invoke } from '@tauri-apps/api/core';
 interface OpenProjectResult {
   fileTree: DirectorySchema[];
   mainFilePath: string;
@@ -31,9 +32,35 @@ export const OpenProject = async (): Promise<OpenProjectResult | null> => {
   }
   const fileTree = await readFolderAsTree(selectedPath);
   const fileName = texFiles[0].name || "";
-  const filePath = await join(selectedPath ,fileName) || "";
+  const filePath = await join(selectedPath, fileName) || "";
+  await invoke("add_to_history", { path: selectedPath })
   return { fileTree, mainFilePath: filePath, mainFileName: fileName };
 }
+
+export const OpenProjectOnStartup = async (): Promise<OpenProjectResult | null> => {
+  const paths: string[] = await invoke("get_history");
+  for (const path of paths) {
+    try {
+      const entries = await readDir(path);
+      const texFiles = entries.filter(entry =>
+        entry.name?.toLowerCase().endsWith(".tex")
+      );
+      if (texFiles.length !== 1) {
+        continue;
+      }
+      const fileTree = await readFolderAsTree(path);
+      const fileName = texFiles[0].name || "";
+      const filePath = await join(path, fileName) || "";
+
+      return { fileTree, mainFilePath: filePath, mainFileName: fileName };
+    }
+    catch (_) {
+      continue;
+    }
+  }
+  return null;
+};
+
 export const CreateProject = async (): Promise<OpenProjectResult | null> => {
   const selectedPath = await open({
     multiple: false,
@@ -56,8 +83,9 @@ export const CreateProject = async (): Promise<OpenProjectResult | null> => {
   }
   const filePath = await join(selectedPath, 'main.tex');
   await create(filePath);
+  await invoke("add_to_history", { path: selectedPath })
   const fileTree = await readFolderAsTree(selectedPath);
-  return {fileTree, mainFilePath: filePath, mainFileName: "main.tex"};
+  return { fileTree, mainFilePath: filePath, mainFileName: "main.tex" };
 }
 export interface DirectorySchema {
   name: string;

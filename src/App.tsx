@@ -68,8 +68,98 @@ function App() {
       expandMethod.current = null;
     }
   };
-
-
+  const handleBeforeMount = (monaco: any) => {
+    monaco.languages.register({
+      id: 'latex',
+      extensions: ['.tex', '.sty', '.cls'],
+      aliases: ['LaTeX', 'latex', 'TeX'],
+      mimetypes: ['text/x-latex'],
+    });
+    monaco.languages.setMonarchTokensProvider('latex', {
+      defaultToken: '',
+      keywords: [
+        'documentclass', 'usepackage', 'begin', 'end',
+        'section', 'subsection', 'subsubsection', 'paragraph', 'chapter',
+        'label', 'ref', 'cite', 'caption', 'include', 'input',
+        'maketitle', 'tableofcontents', 'title', 'author', 'date',
+        'newcommand', 'renewcommand', 'newenvironment', 'renewenvironment',
+      ],
+      tokenizer: {
+        root: [
+          [/%.*/, 'comment'],
+          [/\\begin(?=\{)/, 'keyword.control', '@environment'],
+          [/\\end(?=\{)/, 'keyword.control', '@environment'],
+          [/\\([a-zA-Z]+\*?)/, {
+            cases: {
+              '@keywords': 'keyword',
+              '@default': 'variable.source',
+            }
+          }],
+          [/\\[^a-zA-Z]/, 'constant.character.escape'],
+          [/\$\$/, 'string.date', '@mathDisplay$$'],
+          [/\$/, 'string.date', '@mathInline'],
+          [/\\\[/, 'string.date', '@mathDisplayBracket'],
+          [/[{}]/, 'delimiter.curly'],
+          [/[\[\]]/, 'delimiter.square'],
+          [/[()]/, 'delimiter.paren'],
+        ],
+        environment: [
+          [/\{/, 'delimiter.curly'],
+          [/[a-zA-Z0-9*]+/, 'tag'],
+          [/\}/, 'delimiter.curly', '@pop'],
+        ],
+        mathInline: [
+          [/\$/, 'string.date', '@pop'],
+          [/\\[a-zA-Z]+\*?/, 'keyword.math'],
+          [/\\[^a-zA-Z]/, 'constant.character.escape'],
+          [/[^$\\]+/, 'string.date'],
+        ],
+        'mathDisplay$$': [
+          [/\$\$/, 'string.date', '@pop'],
+          [/\\[a-zA-Z]+\*?/, 'keyword.math'],
+          [/\\[^a-zA-Z]/, 'constant.character.escape'],
+          [/[^$\\]+/, 'string.date'],
+        ],
+        mathDisplayBracket: [
+          [/\\\]/, 'string.date', '@pop'],
+          [/\\[a-zA-Z]+\*?/, 'keyword.math'],
+          [/\\[^a-zA-Z]/, 'constant.character.escape'],
+          [/[^\\\]]+/, 'string.date'],
+        ],
+      },
+    });
+    monaco.editor.defineTheme('latex-dark', {
+      base: 'vs-dark',
+      inherit: true,
+      rules: [
+        { token: 'comment', foreground: '6A9955', fontStyle: 'italic' },
+        { token: 'keyword.control', foreground: 'c792ea', fontStyle: 'bold' },
+        { token: 'keyword', foreground: '82aaff', fontStyle: 'bold' },
+        { token: 'keyword.math', foreground: 'ff5370' },
+        { token: 'variable.source', foreground: '89ddff' },
+        { token: 'tag', foreground: 'ffcb6b', fontStyle: 'bold' },
+        { token: 'string.date', foreground: 'c3e88d' },
+        { token: 'constant.character.escape', foreground: 'f07178' },
+        { token: 'delimiter.curly', foreground: 'ffd700' },
+        { token: 'delimiter.square', foreground: 'e0af68' },
+        { token: 'delimiter.paren', foreground: 'e0af68' },
+      ],
+      colors: {
+        'editor.background': '#1e1e1e',
+        'editor.foreground': '#eeffff',
+        'editor.lineHighlightBackground': '#00000040',
+        'editor.selectionBackground': '#c792ea33',
+        'editorLineNumber.foreground': '#3b4252',
+        'editorLineNumber.activeForeground': '#82aaff',
+        'editorCursor.foreground': '#ffcb6b',
+        'editorBracketMatch.background': '#ffcb6b33',
+        'editorBracketMatch.border': '#ffcb6b',
+      },
+    });
+  };
+  const handleMount = (editor: any) => {
+    setEditor(editor);
+  };
   useEffect(() => {
     const loadFile = async () => {
       const fileData = await readTextFile(mainFilePath)
@@ -80,20 +170,19 @@ function App() {
 
   useEffect(() => {
     const handleOpen = async () => {
-            const tree = await OpenProjectOnStartup()
-            if(tree && tree.fileTree.length > 0){
-                setFolderTree(tree.fileTree)
-                setProjectOpen(true)
-                setMainFilePath(tree.mainFilePath)
-                setMainFileName(tree.mainFileName)
-            }
+      const tree = await OpenProjectOnStartup()
+      if (tree && tree.fileTree.length > 0) {
+        setFolderTree(tree.fileTree)
+        setProjectOpen(true)
+        setMainFilePath(tree.mainFilePath)
+        setMainFileName(tree.mainFileName)
+      }
     }
     handleOpen();
   }, []);
   return (
     <section className="h-screen flex flex-col bg-background">
       <Titlebar toggleConsole={toggleConsole} />
-
       <div className="flex flex-1 h-[90vh] items-center overflow-clip">
         <Sidebar
           selected={selected}
@@ -102,7 +191,6 @@ function App() {
           expandPanel={expandPanel}
           expandMethod={expandMethod}
         />
-
         <Group>
           <Panel
             defaultSize="0%"
@@ -126,13 +214,13 @@ function App() {
                         <Filetab togglePreview={togglePreview} />
                         <Editor
                           className="flex-1"
-                          theme="vs-dark"
+                          theme="latex-dark"
+                          language="latex"
                           height={"100%"}
                           value={content}
                           onChange={(e) => setContent(e)}
-                          onMount={(editor: any) => {
-                            setEditor(editor);
-                          }} />
+                          beforeMount={handleBeforeMount}
+                          onMount={handleMount} />
                       </Panel>
                       <Panel
                         panelRef={consoleRef}

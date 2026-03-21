@@ -1,8 +1,9 @@
-// use tauri::{AppHandle, Emitter, Manager};
+// use tauri::{AppHandle, Manager};
 // use tauri_plugin_shell::process::CommandEvent;
-use tauri_plugin_shell::ShellExt;
 mod db;
 use db::{init_db, add_to_history, get_history};
+mod latex;
+use latex::compile_latex;
 // #[tauri::command]
 // async fn start_texlab(app_handle: AppHandle) {
     // let sidecar_command = app_handle
@@ -29,25 +30,6 @@ use db::{init_db, add_to_history, get_history};
     //     }
     // });
 // }
-
-#[tauri::command]
-async fn compile_latex(app: tauri::AppHandle, tex_path: String) -> Result<String, String> {
-    let sidecar = app.shell().sidecar("tectonic")
-        .map_err(|e| e.to_string())?;
-    let output = sidecar
-        .args(["-X", "compile", &tex_path])
-        .output()
-        .await
-        .map_err(|e| format!("Failed to run Tectonic: {}", e))?;
-
-    if output.status.success() {
-        Ok("PDF generated successfully!".into())
-    } else {
-        let stderr = String::from_utf8_lossy(&output.stderr);
-        Err(format!("Tectonic Error: {}", stderr))
-    }
-}
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -61,7 +43,7 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            compile_latex, 
+            compile_latex,
             add_to_history,
             get_history
             ])

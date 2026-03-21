@@ -13,7 +13,7 @@ import { readTextFile } from "@tauri-apps/plugin-fs";
 import { Console } from "./components/panels/Console";
 import { Preview } from "./components/panels/Preview";
 import { OpenProjectOnStartup } from "./utils/OpenCreateProject";
-
+import { useTectonicLogs } from "./hooks/useTectonicLogs";
 function App() {
   const [selected, setSelected] = useState<number | null>(null);
 
@@ -180,6 +180,7 @@ function App() {
     }
     handleOpen();
   }, []);
+  useTectonicLogs()
   return (
     <section className="h-screen flex flex-col bg-background">
       <Titlebar toggleConsole={toggleConsole} />

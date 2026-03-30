@@ -64,7 +64,7 @@ export function FileTree() {
                                                 await renameItem(fileItem.path, newName.trim());
                                                 setRenamingItem(null);
                                                 setNewName("");
-                                                await refreshTree();
+                                                refreshTree();
                                             }
 
                                             if (e.key === "Escape") {
@@ -144,7 +144,7 @@ export function FileTree() {
                                         await renameItem(fileItem.path, newName.trim());
                                         setRenamingItem(null);
                                         setNewName("");
-                                        await refreshTree();
+                                        refreshTree();
                                     }
 
                                     if (e.key === "Escape") {

@@ -1,13 +1,10 @@
 import { useState } from "react"
 import { useEditorStore } from "@/stores/editorStore"
-
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-
 export const Search = () => {
     const [query, setQuery] = useState("")
     const [replace, setReplace] = useState("")
-
     const {
         searchInFile,
         searchResults,
@@ -15,11 +12,9 @@ export const Search = () => {
         replaceOne,
         replaceAll,
     } = useEditorStore()
-
     return (
         <aside className="w-full h-full bg-background border-r border-border flex flex-col">
             <h1 className="py-3  px-4 flex items-center text-lg">Search</h1>
-
             <div className="p-2 space-y-2">
                 <Input
                     value={query}
@@ -30,13 +25,11 @@ export const Search = () => {
                     }}
                     placeholder="Find"
                 />
-
                 <Input
                     value={replace}
                     onChange={(e) => setReplace(e.target.value)}
                     placeholder="Replace"
                 />
-
                 {searchResults.length > 0 && (
                     <Button
                         size="sm"
@@ -47,7 +40,6 @@ export const Search = () => {
                     </Button>
                 )}
             </div>
-
             <section className="flex-1 overflow-y-auto">
                 {searchResults.map((r, i) => (
                     <div
@@ -63,7 +55,6 @@ export const Search = () => {
                             </div>
                             <div className="truncate">{r.preview}</div>
                         </div>
-
                         <Button
                             variant="ghost"
                             size="sm"
@@ -74,7 +65,6 @@ export const Search = () => {
                         </Button>
                     </div>
                 ))}
-
                 {query && searchResults.length === 0 && (
                     <div className="p-3 text-sm text-muted-foreground">
                         No results

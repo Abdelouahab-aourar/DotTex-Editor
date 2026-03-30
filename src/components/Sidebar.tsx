@@ -1,5 +1,4 @@
 import { Folder, FolderOpen, Search } from 'lucide-react'
-
 type Props = {
     selected: number | null
     setSelected: (state: number | null) => void
@@ -7,9 +6,7 @@ type Props = {
     expandPanel: () => void
     expandMethod: any
 }
-
 export const Sidebar = ({ selected, setSelected, collapsePanel, expandPanel, expandMethod }: Props) => {
-
     const handleIconClick = (index: number) => {
         expandMethod.current = "click"
         if (selected === index) {
@@ -20,12 +17,10 @@ export const Sidebar = ({ selected, setSelected, collapsePanel, expandPanel, exp
             expandPanel();
         }
     };
-
     const navItems = [
         { id: 0, activeIcon: FolderOpen, inactiveIcon: Folder },
         { id: 1, activeIcon: Search, inactiveIcon: Search },
     ];
-
     return (
         <aside className="w-15 h-full bg-background border-r border-border flex flex-col space-y-3 items-center">
             {

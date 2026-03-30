@@ -8,9 +8,6 @@ export const RunDropdown = () => {
                 Build PDF
                 <DropdownMenuShortcut>Ctrl+S</DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-                Preview PDF
-            </DropdownMenuItem>
         </DropdownMenuContent>
     )
 }

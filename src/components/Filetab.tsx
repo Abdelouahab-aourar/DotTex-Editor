@@ -7,7 +7,7 @@ type Props = {
     togglePreview: () => void
 }
 export const Filetab = ({ togglePreview }: Props) => {
-    const { mainFileName } = useFileStore()    
+    const { mainFileName } = useFileStore()
     const { buildPDF } = useProjectActions()
     return (
         <div className="select-none flex justify-between items-center bg-background border-b border-b-border px-4 h-10 w-full">

@@ -9,7 +9,7 @@ A modern, cross-platform LaTeX editor built as a desktop application. Write, com
 ## ✨ Features
 
 - 📝 **Full-featured LaTeX editor** with syntax highlighting
-- ⚡ **One-click compilation** powered by [Tectonic](https://tectonic-typesetting.github.io/) as a bundled sidecar binary
+- ⚡ **One-click compilation** powered by [Tectonic](https://github.com/tectonic-typesetting/tectonic/) as a bundled sidecar binary
 - 📄 **Integrated PDF viewer** — preview your compiled document side-by-side
 - 💾 **Project management** with SQLite for persistent local storage
 - 🚀 **Blazing fast** native performance via Rust backend
@@ -47,7 +47,7 @@ Just want to try the app? No need to clone or build anything — grab the latest
 ---
 ## 📸 Screenshots
 
-![IDE View](.github/screenshots/screenshot1.png)
+![IDE View](/screenshots/screenshot1.png)
 
 ---
 

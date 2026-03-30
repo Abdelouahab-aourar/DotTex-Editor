@@ -15,7 +15,7 @@ export const OpenProject = async (): Promise<OpenProjectResult | null> => {
     directory: true,
   });
   if (!selectedPath) {
-    await message('No Folder Selected', { title: 'tex-ide', kind: 'info' });
+    await message('No Folder Selected', { title: 'DotTex', kind: 'info' });
     return null;
   }
   const entries = await readDir(selectedPath);
@@ -23,11 +23,11 @@ export const OpenProject = async (): Promise<OpenProjectResult | null> => {
     entry.name?.toLowerCase().endsWith(".tex")
   );
   if (texFiles.length === 0) {
-    await message('Folder must contain one .tex file', { title: 'tex-ide', kind: 'error' });
+    await message('Folder must contain one .tex file', { title: 'DotTex', kind: 'error' });
     return null;
   }
   if (texFiles.length > 1) {
-    await message('Folder must contain only one .tex file', { title: 'tex-ide', kind: 'error' });
+    await message('Folder must contain only one .tex file', { title: 'DotTex', kind: 'error' });
     return null;
   }
   const fileTree = await readFolderAsTree(selectedPath);
@@ -67,7 +67,7 @@ export const CreateProject = async (): Promise<OpenProjectResult | null> => {
     directory: true,
   });
   if (!selectedPath) {
-    await message('No Folder Selected', { title: 'tex-ide', kind: 'info' });
+    await message('No Folder Selected', { title: 'DotTex', kind: 'info' });
     return null;
   }
   const entries = await readDir(selectedPath);
@@ -76,7 +76,7 @@ export const CreateProject = async (): Promise<OpenProjectResult | null> => {
   );
   if (texFiles.length > 0) {
     await message('Project already initialized you can open it using Open Project', {
-      title: 'tex-ide',
+      title: 'DotTex',
       kind: 'error'
     });
     return null;

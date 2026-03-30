@@ -9,18 +9,13 @@ type Props = {
     fileItem: DirectorySchema;
 }
 export const FileTreeContextMenu = ({ createFolderSetup, renameItemSetup, fileItem }: Props) => {
-
     const { setSourcePath, setDestinationPath, setAction, doAction, refreshTree } = useFileStore()
-
     return (
         <ContextMenuContent className="w-50">
-
             <ContextMenuItem onClick={createFolderSetup}>
                 New Folder...
             </ContextMenuItem>
-
             <ContextMenuSeparator />
-
             <ContextMenuItem onClick={() => {
                 setSourcePath(fileItem.path);
                 setAction("move");
@@ -28,7 +23,6 @@ export const FileTreeContextMenu = ({ createFolderSetup, renameItemSetup, fileIt
                 Cut
                 <ContextMenuShortcut>ctrl + x</ContextMenuShortcut>
             </ContextMenuItem>
-
             <ContextMenuItem onClick={() => {
                 setSourcePath(fileItem.path);
                 setAction("copy");
@@ -36,7 +30,6 @@ export const FileTreeContextMenu = ({ createFolderSetup, renameItemSetup, fileIt
                 Copy
                 <ContextMenuShortcut>ctrl + c</ContextMenuShortcut>
             </ContextMenuItem>
-
             <ContextMenuItem disabled={!fileItem.items} onClick={async () => {
                 setDestinationPath(fileItem.path);
                 await doAction();
@@ -45,14 +38,11 @@ export const FileTreeContextMenu = ({ createFolderSetup, renameItemSetup, fileIt
                 Paste
                 <ContextMenuShortcut>ctrl + v</ContextMenuShortcut>
             </ContextMenuItem>
-
             <ContextMenuSeparator />
-
             <ContextMenuItem onClick={renameItemSetup}>
                 Rename...
                 <ContextMenuShortcut>F2</ContextMenuShortcut>
             </ContextMenuItem>
-
             <ContextMenuItem onClick={async () => {
                 await deleteItem(fileItem.path);
                 await refreshTree();
@@ -60,9 +50,6 @@ export const FileTreeContextMenu = ({ createFolderSetup, renameItemSetup, fileIt
                 Delete
                 <ContextMenuShortcut>del</ContextMenuShortcut>
             </ContextMenuItem>
-
         </ContextMenuContent >
-
     )
-
 }

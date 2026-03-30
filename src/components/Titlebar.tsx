@@ -5,7 +5,7 @@ import { DropdownMenu, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { FileDropdown } from "./Dropdowns/FileDropdown";
 import { EditDropdown } from "./Dropdowns/EditDropdown";
 import { RunDropdown } from "./Dropdowns/RunDropdown";
-
+import DotTex from "../assets/DotTex.png"
 type Props = {
     toggleConsole: () => void
 }
@@ -47,9 +47,9 @@ export const Titlebar = ({ toggleConsole }: Props) => {
     return (
         <header data-tauri-drag-region className="select-none flex justify-between items-center bg-background border-b border-b-border px-4">
             <div className="flex items-center space-x-6">
-                <h1 className="text-xl " data-tauri-drag-region="false">
-                    L
-                </h1>
+                <div data-tauri-drag-region="false" className="w-10 h-6">
+                    <img src={DotTex} alt="DotTex Logo" />
+                </div>
                 <div className="flex items-center space-x-1" data-tauri-drag-region="false">
                     {
                         tools.map((tool, key) => {

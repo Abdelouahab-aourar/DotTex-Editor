@@ -10,16 +10,11 @@ import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu"
 import { FileTreeContextMenu } from "../Dropdowns/FileTreeContextMenu"
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "../ui/hover-card"
 export function FileTree() {
-
     const { folderTree, refreshTree, isProjectOpen } = useFileStore();
-
     const [creatingInPath, setCreatingInPath] = useState<string | null>(null);
     const [newFolderName, setNewFolderName] = useState("");
-
     const [renamingItem, setRenamingItem] = useState<string | null>(null);
     const [newName, setNewName] = useState("");
-
-
     const renderItem = (fileItem: DirectorySchema) => {
         const renameItemSetup = () => {
             setRenamingItem(fileItem.path);

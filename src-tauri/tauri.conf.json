@@ -1,21 +1,23 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "tex-ide",
-  "version": "0.1.0",
-  "identifier": "com.tex-ide",
+  "productName": "DotTex",
+  "version": "1.0.0",
+  "identifier": "com.dot-tex",
   "build": {
     "beforeDevCommand": "pnpm dev",
-    "devUrl": "http://localhost:1420",
+    "devUrl": "http://localhost:3000",
     "beforeBuildCommand": "pnpm build",
     "frontendDist": "../dist"
   },
   "app": {
     "windows": [
       {
-        "title": "tex-ide",
-        "width": 800,
-        "height": 600,
-        "decorations": false
+        "title": "DotTex",
+        "minWidth": 800,
+        "minHeight": 600,
+        "decorations": false,
+        "center": true,
+        "maximized": true
       }
     ],
     "security": {
@@ -24,7 +26,6 @@
   },
   "bundle": {
     "externalBin": [
-      "binaries/texlab",
       "binaries/tectonic"
     ],
     "active": true,

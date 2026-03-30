@@ -27,16 +27,6 @@
       "identifier": "fs:allow-home-read-recursive",
       "comment": "Allows reading subfolders nested deeply within the home directory"
     },
-    {
-      "identifier": "shell:allow-execute",
-      "allow": [
-        {
-          "args": true,
-          "name": "binaries/texlab",
-          "sidecar": true
-        }
-      ]
-    },
     "fs:default",
     {
       "identifier": "fs:allow-exists",

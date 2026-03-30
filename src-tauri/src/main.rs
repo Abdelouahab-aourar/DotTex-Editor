@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    tex_ide_lib::run()
+    dot_tex_lib::run()
 }

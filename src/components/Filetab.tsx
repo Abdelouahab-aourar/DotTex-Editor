@@ -2,25 +2,13 @@ import { Columns2, FileCheckCorner } from "lucide-react"
 import { Button } from "./ui/button"
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "./ui/hover-card"
 import { useFileStore } from "@/stores/useFileStore"
-import { useEditorStore } from "@/stores/editorStore"
-import { invoke } from "@tauri-apps/api/core"
-import { writeTextFile } from "@tauri-apps/plugin-fs"
+import { useProjectActions } from "@/utils/useProjectActions"
 type Props = {
     togglePreview: () => void
 }
 export const Filetab = ({ togglePreview }: Props) => {
-    const { mainFilePath, mainFileName } = useFileStore()
-    const { getContent } = useEditorStore()
-    const buildPDF = async () => {
-        try {
-            await writeTextFile(mainFilePath, getContent())
-            console.log("Compiling ...")
-            await invoke("compile_latex", { texPath: mainFilePath });
-            console.log(getContent())
-        } catch (error) {
-            console.log(`an error occured. ${error}`)
-        }
-    }
+    const { mainFileName } = useFileStore()    
+    const { buildPDF } = useProjectActions()
     return (
         <div className="select-none flex justify-between items-center bg-background border-b border-b-border px-4 h-10 w-full">
             <div className="flex justify-between items-center">

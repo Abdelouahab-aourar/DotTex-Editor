@@ -16,8 +16,9 @@ import { OpenProjectOnStartup } from "./utils/OpenCreateProject";
 import { useTectonicLogs } from "./hooks/useTectonicLogs";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { message } from "@tauri-apps/plugin-dialog";
-
+import { useProjectActions } from "./utils/useProjectActions";
 function App() {
+  const { handleOpen, handleCreate, closeProject, buildPDF } = useProjectActions()
   const [selected, setSelected] = useState<number | null>(null);
   const { isProjectOpen, mainFilePath, setProjectOpen, setMainFilePath, setMainFileName, setFolderTree } = useFileStore();
   const lastSelected = useRef<number | null>(0);
@@ -163,7 +164,7 @@ function App() {
     if (mainFilePath) loadFile();
   }, [mainFilePath]);
   useEffect(() => {
-    const handleOpen = async () => {
+    const handleOpenOnStartup = async () => {
       const tree = await OpenProjectOnStartup()
       if (tree && tree.fileTree.length > 0) {
         setFolderTree(tree.fileTree)
@@ -172,7 +173,7 @@ function App() {
         setMainFileName(tree.mainFileName)
       }
     }
-    handleOpen();
+    handleOpenOnStartup();
   }, []);
   useEffect(() => {
     if (!mainFilePath) return;
@@ -187,7 +188,31 @@ function App() {
       }
     }, 500);
     return () => clearTimeout(timer);
-  }, [content, mainFilePath, getContent]);
+  }, [content, mainFilePath]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key.toLowerCase() === "o") {
+        e.preventDefault();
+        handleOpen();
+      }
+      if (e.ctrlKey && e.key.toLowerCase() === "n") {
+        e.preventDefault();
+        handleCreate();
+      }
+      if (e.ctrlKey && e.key.toLowerCase() === "w") {
+        e.preventDefault();
+        closeProject();
+      }
+      if (e.ctrlKey && e.key.toLowerCase() === "s") {
+        e.preventDefault();
+        buildPDF();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleOpen, handleCreate, closeProject, buildPDF]);
+
   useTectonicLogs()
   return (
     <section className="h-screen flex flex-col bg-background">

@@ -14,36 +14,30 @@ import { Console } from "./components/panels/Console";
 import { Preview } from "./components/panels/Preview";
 import { OpenProjectOnStartup } from "./utils/OpenCreateProject";
 import { useTectonicLogs } from "./hooks/useTectonicLogs";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
+import { message } from "@tauri-apps/plugin-dialog";
+
 function App() {
   const [selected, setSelected] = useState<number | null>(null);
-
   const { isProjectOpen, mainFilePath, setProjectOpen, setMainFilePath, setMainFileName, setFolderTree } = useFileStore();
-
   const lastSelected = useRef<number | null>(0);
   const expandMethod = useRef<"click" | "drag" | null>(null);
-
-  const { setEditor, content, setContent } = useEditorStore();
-
+  const { setEditor, content, setContent, getContent } = useEditorStore();
   const ref = usePanelRef();
-
   const consoleRef = usePanelRef();
   const toggleConsole = () => {
     consoleRef.current?.isCollapsed() ? consoleRef.current?.expand() : consoleRef.current?.collapse();
   }
-
   const previewRef = usePanelRef();
   const togglePreview = () => {
     previewRef.current?.isCollapsed() ? previewRef.current?.expand() : previewRef.current?.collapse();
   }
-
   const collapsePanel = () => {
     ref.current?.collapse();
   };
-
   const expandPanel = () => {
     ref.current?.expand();
   };
-
   const handlePanelResize = (
     panelSize: PanelSize,
     _id: string | number | undefined,
@@ -51,7 +45,6 @@ function App() {
   ) => {
     const isCollapsed = panelSize.inPixels === 0;
     const wasCollapsed = prevPanelSize?.inPixels === 0;
-
     if (isCollapsed && !wasCollapsed) {
       if (selected !== null) {
         lastSelected.current = selected;
@@ -59,12 +52,10 @@ function App() {
       setSelected(null);
       expandMethod.current = null;
     }
-
     if (!isCollapsed && wasCollapsed) {
       if (expandMethod.current !== "click") {
         setSelected(lastSelected.current);
       }
-
       expandMethod.current = null;
     }
   };
@@ -162,12 +153,15 @@ function App() {
   };
   useEffect(() => {
     const loadFile = async () => {
-      const fileData = await readTextFile(mainFilePath)
-      setContent(fileData);
+      try {
+        const fileData = await readTextFile(mainFilePath);
+        setContent(fileData);
+      } catch (error) {
+        await message("Failed to load file: " + error, { title: 'DotTex', kind: 'error' });
+      }
     };
-    loadFile();
+    if (mainFilePath) loadFile();
   }, [mainFilePath]);
-
   useEffect(() => {
     const handleOpen = async () => {
       const tree = await OpenProjectOnStartup()
@@ -180,6 +174,20 @@ function App() {
     }
     handleOpen();
   }, []);
+  useEffect(() => {
+    if (!mainFilePath) return;
+    const timer = setTimeout(async () => {
+      try {
+        await writeTextFile(mainFilePath, getContent());
+      } catch (error) {
+        await message("Failed to save the .tex file: " + error, {
+          title: 'DotTex',
+          kind: 'error'
+        });
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [content, mainFilePath, getContent]);
   useTectonicLogs()
   return (
     <section className="h-screen flex flex-col bg-background">
@@ -219,7 +227,7 @@ function App() {
                           language="latex"
                           height={"100%"}
                           value={content}
-                          onChange={(e) => setContent(e)}
+                          onChange={(e) => setContent(e ?? "")}
                           beforeMount={handleBeforeMount}
                           onMount={handleMount} />
                       </Panel>

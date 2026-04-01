@@ -1,4 +1,4 @@
-# 🧪 LaTeX IDE — Desktop App
+# 🧪 LaTeX Editor — Desktop App
 
 A modern, cross-platform LaTeX editor built as a desktop application. Write, compile, and preview LaTeX documents locally — no internet connection required, no subscriptions, no cloud.
 
@@ -34,7 +34,7 @@ A modern, cross-platform LaTeX editor built as a desktop application. Write, com
  
 Just want to try the app? No need to clone or build anything — grab the latest pre-built installer for your platform directly from the **GitHub Releases** page:
  
-🔗 **[Latest Release → GitHub Releases](https://github.com/Abdelouahab-aourar/DotTex-IDE/releases/latest)**
+🔗 **[Latest Release → GitHub Releases](https://github.com/Abdelouahab-aourar/DotTex-Editor/releases/latest)**
  
 | Platform | File |
 |---|---|
@@ -70,7 +70,7 @@ If you want to clone the repo, make sure the following are installed on your sys
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Abdelouahab-aourar/DotTex-IDE
+git clone https://github.com/Abdelouahab-aourar/DotTex-Editor
 cd DotTex-IDE
 ```
 
